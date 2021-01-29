@@ -1,0 +1,7 @@
+pycodestyle
+flake8
+yapf
+powerline-status
+pipvim
+pynvim
+neovim

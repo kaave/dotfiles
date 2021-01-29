@@ -1,0 +1,6 @@
+# 補間時大文字小文字無視
+$if Bash
+    set completion-ignore-case on
+$endif
+# ベル無
+set bell-style none

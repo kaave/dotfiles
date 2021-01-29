@@ -1,0 +1,12 @@
+[submodule ".config/awesome/awesome.brightness-widget"]
+	path = .config/awesome/awesome.brightness-widget
+	url = https://github.com/velovix/awesome.brightness-widget.git
+[submodule ".config/awesome/volume-control"]
+	path = .config/awesome/volume-control
+	url = https://github.com/deficient/volume-control.git
+[submodule ".config/awesome/net_widgets"]
+	path = .config/awesome/net_widgets
+	url = https://github.com/pltanton/net_widgets.git
+[submodule ".config/awesome/battery-widget"]
+	path = .config/awesome/battery-widget
+	url = https://github.com/deficient/battery-widget.git

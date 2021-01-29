@@ -1,0 +1,27 @@
+{
+    "segments": {
+        "right": [
+            {
+                "function": "powerline.segments.common.sys.cpu_load_percent",
+                "before": "CPU:",
+                "width": 7,
+                "align": "c",
+                "priority": 50
+            },
+            {
+                "function":"powerline.segments.common.net.network_load",
+                "width": 13,
+                "align": "c",
+                "priority": 40
+            },
+            {
+                "function": "powerline.segments.common.time.date",
+                "name": "time",
+                "args": {
+                    "format": "%-I:%M %p",
+                    "istime": true
+                }
+            }
+        ]
+    }
+}

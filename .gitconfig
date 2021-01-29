@@ -1,0 +1,95 @@
+[user]
+    name = kaave
+    email = junkjunctions@gmail.com
+[core]
+    excludesfile = /Users/kaave/.gitignore_global
+    editor = nvim
+    autocrlf = input
+    ignorecase = false
+    pager = delta --theme='Solarized (dark)'
+[interactive]
+    diffFilter = delta --color-only
+[color]
+    ui = true
+[merge]
+    # merge --no-ff をデフォルトとし、fast-forwardを切る
+    ff = false
+    # vimdiffを利用する
+    tool = vimdiff
+[branch]
+    # pullするとき常にrebase
+    autosetuprebase = always
+[pull]
+    # pullするとき常にrebase
+    rebase = merges
+[push]
+    # カレントのブランチと同名のリモートブランチがあったらpush
+    default = current
+[alias]
+    aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
+    co = checkout
+    cb = checkout -b
+    a = add
+    aa = add .
+    b = branch
+    m = merge
+    f = fetch
+    fo = fetch origin
+    fu = fetch upstream
+    r = rebase
+    ri = rebase -i
+    s = status
+    sw = switch
+    cm = commit -m
+    ca = commit --amend
+    p = push
+    po = push origin
+    pom = push origin master
+    pos = push origin --set-upstream
+    pwb = ! git branch | grep -e '^\\* ' | sed -e 's/^\\* //g'
+    erase = !git reset --hard && git clean -fd
+    d = diff
+    dw = diff --word-diff-regex=$'[^\\x80-\\xbf][\\x80-\\xbf]*' --word-diff=color
+    # tig風のグラフを出力
+    graph = log --graph --date=iso --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
+    # 今日一日の作業
+    today = log --oneline --since='12 hour ago'
+    today-code = "log --stat --since='12 hour ago' --pretty=format:'#--------------------------------------------------------%ncommit %C(green bold)%H%n%CresetAuthor: %C(yellow bold)%an %x3c%ae%x3e%n%CresetDate:    %aD%n%n%C(cyan bold)    %s%n%n%Creset%w(0,4,4)%b'"
+    # すっきりしたgit log
+    ls = log --decorate --oneline --stat --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
+    # コミットランキング
+    rank = shortlog -s -n --no-merges
+    # vimdiff使う
+    vdiff = difftool
+    # GitHubのブランチを一括同期
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git remote -v update -p"
+    # pull -f
+    force-pull = !git fetch && git reset --hard origin/$(git pwb)
+[credential]
+    # helper = osxkeychain
+    helper = cache --timeout=43200
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    required = true
+    process = git-lfs filter-process
+[diff]
+    # diffはvimdiffを利用する
+    tool = vimdiff
+    noprefix = true
+[difftool]
+    # vimdiff使うのでプロンプト切る
+    prompt = false
+[mergetool]
+    # vimdiff使うのでプロンプト切る
+    prompt = false
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+    template = /Users/abe/.stCommitMsg
+[init]
+	defaultBranch = main

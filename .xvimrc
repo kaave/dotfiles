@@ -1,0 +1,197 @@
+" "---------------------------------------------------------------------------
+" " machine type define
+" "---------------------------------------------------------------------------
+" let s:is_iterm = exists('$ITERM_PROFILE')
+" let s:is_tmux = exists('$TMUX')
+" let s:is_win = has("win32") || has("win64")
+" let s:is_mac = has("mac")
+" let s:is_unix = has("unix")
+" let s:is_linux = has("Linux")
+"
+" let s:noplugin = 0
+"
+" "---------------------------------------------------------------------------
+" " set vim dir
+" "---------------------------------------------------------------------------
+" if s:is_win
+"     :let $VIMFILE_DIR = 'vimfiles'
+" else
+"     :let $VIMFILE_DIR = '.vim'
+" endif
+"
+" " -----------------------------------------
+" " source ~/$VIMFILE_DIR/core.vim
+" " -----------------------------------------
+" " kill vi compatible
+" set nocompatible
+" " 256 color depth
+" set t_Co=256
+" " line number
+" set number
+" " kill backup
+" set nobackup
+" set nowritebackup
+" " kill undo file
+" set noundofile
+" " kill swapfile
+" set noswapfile
+" " indent on
+" set autoindent
+" " smart indent off
+" "set smartindent
+" "< > でインデントするときにshiftwidthにあわせる
+" set shiftround
+" "左右のカーソル移動で行間移動可能にする
+" set whichwrap=h,l,b,s,<,>,[,]
+" "矩形選択で行末以降も選択可能に
+" set virtualedit=block
+" nnoremap <expr> p (col('.') >= col('$') ? '$' : '') . 'p'
+" " ヤンクをクリップボードへ送り込む
+" set clipboard+=unnamed
+" " modeline(開いたファイルに書いてあるvim設定)を有効にする
+" set modeline
+" " ctrl+a/x の加算/減算処理を10進数固定で扱う
+" set nrformats=
+" " エディタからのファイル選択補完を有効に
+" set wildmode=longest:full
+" set matchpairs& matchpairs+=<:>
+" " " remove right spaces or tabs before file save
+" " function! RTrim()
+" "     let s:cursor = getpos(".")
+" "     %s/[ \t]\+$//e
+" "     call setpos(".", s:cursor)
+" " endfunction
+" " autocmd BufWritePre *.php call RTrim()       " PHP
+" " autocmd BufWritePre *.rb call RTrim()        " Ruby
+" " autocmd BufWritePre *.ex call RTrim()        " Elixir
+" " autocmd BufWritePre *.exs call RTrim()       " Elixir
+" " autocmd BufWritePre *.js call RTrim()        " JavaScript
+" " autocmd BufWritePre *.jsx call RTrim()       " JSX
+" " autocmd BufWritePre *.coffee call RTrim()    " CoffeeScript
+" " autocmd BufWritePre *.ts call RTrim()        " TypeScript
+" " autocmd BufWritePre *.tsx call RTrim()       " TypeScript React
+" "
+" " autocmd BufWritePre *.css call RTrim()       " CSS
+" " autocmd BufWritePre *.scss call RTrim()      " SCSS
+" " autocmd BufWritePre *.sass call RTrim()      " SASS
+" "
+" " autocmd BufWritePre *.html call RTrim()      " html
+" " autocmd BufWritePre *.twig call RTrim()      " Twig
+" " autocmd BufWritePre *.ejs call RTrim()       " Effective JavaScript
+" " autocmd BufWritePre *.erb call RTrim()       " Effective Ruby
+" " autocmd BufWritePre *.eex call RTrim()       " Effective Elixir
+" " autocmd BufWritePre *.jade call RTrim()      " pug(jade)
+" " autocmd BufWritePre *.pug call RTrim()       " pug(jade)
+" " autocmd BufWritePre *.slim call RTrim()      " SLIM
+" "
+" " autocmd BufWritePre *.json call RTrim()      " JSON
+" " autocmd BufWritePre *.cson call RTrim()      " CSON
+" " autocmd BufWritePre *.xml call RTrim()       " JSON
+" " autocmd BufWritePre *.yml call RTrim()       " JSON
+" "
+" " autocmd BufWritePre *.sql call RTrim()       " sql script
+" "
+" " autocmd BufWritePre *.bat call RTrim()       " Windows bat file
+" " autocmd BufWritePre *.cmd call RTrim()       " Windows cmd file
+" " autocmd BufWritePre *.sh call RTrim()        " Shell script
+" " autocmd BufWritePre *.bash call RTrim()      " Bash script
+" " autocmd BufWritePre *.zsh call RTrim()       " zsh script
+" " autocmd BufWritePre *.vim call RTrim()       " vim script
+" "
+" " autocmd BufWritePre .vimrc call RTrim()      " vim setting file
+" " autocmd BufWritePre .gvimrc call RTrim()     " vim setting file(GUI)
+" " autocmd BufWritePre .gitignore call RTrim()  " git ignore
+" " autocmd BufWritePre Gemfile call RTrim()     " Gemfile
+" " autocmd BufWritePre Procfile call RTrim()    " Procfile
+" " autocmd BufWritePre Dockerfile call RTrim()  " Dockerfile
+" " autocmd BufWritePre Vagrantfile call RTrim() " Vagrantfile
+"
+" " autosave cursor position
+" augroup vimrcEx
+"   au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
+"   \ exe "normal g`\"" | endif
+" augroup END
+"
+" " ビープ音を消す
+" set visualbell t_vb=
+" set noerrorbells
+" " LinuxならBackSpace
+" if exists('$TMUX')
+"     " ctrl+v, ctrl+hと入れる
+"     noremap ^? ^H
+"     noremap! ^? ^H
+" endif
+" " インサートモードから抜ける際にnopasteモードにする
+" autocmd InsertLeave * set nopaste
+"
+" " -----------------------------------------
+" " source ~/$VIMFILE_DIR/looks.vim
+" " -----------------------------------------
+" " 全角記号の見た目が崩れる場合があるので対応
+" set ambiwidth=double
+" "タブで半角スペース入れる
+" set expandtab
+" "対応括弧強調
+" set showmatch
+" "検索結果強調
+" set hlsearch
+" "常にカーソル行より10行余裕持って表示()
+" set scrolloff=10
+" "検索とかでジャンプした際にジャンプ前のカーソル位置を維持
+" set nostartofline
+" "タブや行末などを可視化
+" set list
+" " タブとか改行を示す文字列 eol(改行)は背景色違いのスペースにする。
+" set listchars=tab:^\ ,extends:<,trail:-,eol:\  
+" " 一応ステータスバーの幅を指定
+" set laststatus=2
+" " カーソルの見た目をコマンドモードはブロックでインサートモードは棒に
+" let &t_SI = "\e]50;CursorShape=1\x7"
+" let &t_EI = "\e]50;CursorShape=0\x7"
+"
+" " -----------------------------------------
+" " source ~/$VIMFILE_DIR/search.vim
+" " -----------------------------------------
+" "検索文字列が小文字の場合は大文字小文字を区別なく検索する
+" set ignorecase
+" "検索文字列に大文字が含まれている場合は区別して検索する
+" set smartcase
+" "検索時に最後まで行ったら最初に戻る
+" set wrapscan
+" "インクリメンタルサーチ
+" set incsearch
+" "/を勝手にESCAPE
+" cnoremap <expr> /  getcmdtype() == '/' ? '\/' : '/'
+" cnoremap <expr> ?  getcmdtype() == '?' ? '\?' : '?'
+" " 検索後にジャンプした際に検索単語を画面中央に持ってくる
+" nnoremap n nzz
+" nnoremap N Nzz
+" nnoremap * *zz
+" nnoremap # #zz
+" nnoremap g* g*zz
+" nnoremap g# g#zz
+"
+" " -----------------------------------------
+" " source ~/$VIMFILE_DIR/alias.vim
+" " -----------------------------------------
+" " ノーマルモードで Ctrl + hjkl でウィンドウ間を移動
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
+" " Shift + 矢印でウィンドウサイズを変更
+" nnoremap <S-Left>  <C-w><<CR>
+" nnoremap <S-Right> <C-w>><CR>
+" nnoremap <S-Up>    <C-w>-<CR>
+" nnoremap <S-Down>  <C-w>+<CR>
+" " Spaceで1ページ移動 Shift + Spaceで戻る
+" nnoremap <SPACE>   <PageDown>
+" nnoremap <S-SPACE> <PageUp>
+"
+" " append syntax, filetypes
+" syntax on
+" filetype plugin indent on
+"
+" " vim-surround emulate enable
+" set surround
+"

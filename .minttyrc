@@ -1,0 +1,27 @@
+# #######################
+# create symbolic link to %APPDATA%\wsltty\config
+# #######################
+
+# Global
+Term=xterm-256color
+BellType=0
+AllowSetSelection=yes
+
+# Window
+ScrollbackLines=1000000
+Scrollbar=none
+Columns=159
+Rows=34
+
+# Graphics
+ThemeFile=solarized dark
+Padding=5
+
+# Fonts
+Font=HackGen Console for Powerline
+FontHeight=14
+RowSpacing=5
+
+# Cursors
+CursorType=block
+CursorBlinks=no

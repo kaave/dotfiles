@@ -1,0 +1,200 @@
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod4
+set $Locker i3lock && sleep 1
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:Noto Sans 10
+
+# Remove title bar
+for_window [class="^.*"] border pixel 1
+new_window 1pixel
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# Use hardware control
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%- && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+ && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id amixer set Capture toggle && $refresh_i3status
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && $refresh_i3status
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 2 && $refresh_i3status
+
+# Screen Capture & Recorder
+bindsym $mod+Shift+4 exec --no-startup-id ksnip -r
+bindsym $mod+Shift+5 exec --no-startup-id simplescreenrecorder --no-systray
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Shift+Return exec alacritty
+
+# kill focused window
+bindsym $mod+q kill
+
+# start launcher)
+bindsym $mod+p exec rofi -show run
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# Define workspaces
+set $ws1 1: web
+set $ws2 2: slack
+set $ws3 3: todo
+# set $ws4
+# set $ws5
+# set $ws6
+# set $ws7
+set $ws8 8: text
+set $ws9 9: code
+set $ws0 10: terminal
+bindsym ctrl+1 workspace $ws1
+bindsym ctrl+Shift+1 move container to workspace $ws1
+bindsym ctrl+2 workspace $ws2
+bindsym ctrl+Shift+2 move container to workspace $ws2
+bindsym ctrl+3 workspace $ws3
+bindsym ctrl+Shift+3 move container to workspace $ws3
+bindsym ctrl+4 workspace number 4
+bindsym ctrl+Shift+4 move container to workspace number 4
+bindsym ctrl+5 workspace number 5
+bindsym ctrl+Shift+5 move container to workspace number 5
+bindsym ctrl+6 workspace number 6
+bindsym ctrl+Shift+6 move container to workspace number 6
+bindsym ctrl+7 workspace number 7
+bindsym ctrl+Shift+7 move container to workspace number 7
+bindsym ctrl+8 workspace $ws8
+bindsym ctrl+Shift+8 move container to workspace $ws8
+bindsym ctrl+9 workspace $ws9
+bindsym ctrl+Shift+9 move container to workspace $ws9
+bindsym ctrl+0 workspace $ws0
+bindsym ctrl+Shift+0 move container to workspace $ws0
+
+# application's default workspaces
+# tips: get app's class name run xprop
+for_window [class="Brave-browser"] move to workspace $ws1
+for_window [class="Slack"]         move to workspace $ws2
+for_window [class="^ticktick"]     move to workspace $ws3
+for_window [class="Notepadqq"]     move to workspace $ws8
+for_window [class="Code"]          move to workspace $ws9
+for_window [class="Alacritty"]     move to workspace $ws0
+
+# application's default floating
+for_window [class="Thunar"] floating enable
+
+# set PgUp/Dn key to move workspace
+bindsym $mod+Prior workspace prev
+bindsym $mod+Next workspace next
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec --no-startup-id \
+        "i3-nagbar -t warning -m 'Do you really want to exit i3?' -b 'Shutdown' 'systemctl poweroff' -b 'Reboot' 'systemctl reboot' -b 'Logout' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize grow width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize shrink width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+#
+# lock screen
+#
+bindsym $mod+shift+q exec $Locker
+
+#
+# autorun apps
+#
+exec --no-startup-id nm-applet
+exec --no-startup-id dunst
+exec --no-startup-id volumeicon
+
+exec --no-startup-id brave
+exec --no-startup-id slack
+exec --no-startup-id ticktick
+exec --no-startup-id notepadqq
+exec --no-startup-id code
+exec --no-startup-id alacritty
+
+#
+# wallpaper
+#
+exec --no-startup-id "feh --bg-scale \"$HOME/Google Drive/Images/Wallpaper/01341_headingwest_2560x1024.jpg\""
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        status_command i3status
+        mode hide
+        position top
+        output primary
+        # tray_output none
+        font pango:Noto Sans 10
+        separator_symbol ⁞
+        colors {
+                background #002b36
+                statusline #839496
+                separator  #586e75
+                focused_workspace  #b58900 #b58900 #002b36
+                active_workspace   #586e75 #586e75 #002b36
+                inactive_workspace #073642 #002b36 #839496
+                urgent_workspace   #dc322f #dc322f #fdf6e3
+        }
+}
+
+client.focused          #002b36 #586e75 #fdf6e3 #268bd2
+client.focused_inactive #002b36 #073642 #839496 #073642
+client.unfocused        #002b36 #073642 #839496 #073642
+client.urgent           #002b36 #dc322f #fdf6e3 #002b36
