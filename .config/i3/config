@@ -75,7 +75,7 @@ bindsym $mod+a focus parent
 # Define workspaces
 set $ws1 1: web
 set $ws2 2: slack
-set $ws3 3: todo
+set $ws3 3: xaas
 # set $ws4
 # set $ws5
 # set $ws6
@@ -106,12 +106,12 @@ bindsym ctrl+Shift+0 move container to workspace $ws0
 
 # application's default workspaces
 # tips: get app's class name run xprop
-for_window [class="Brave-browser"] move to workspace $ws1
-for_window [class="Slack"]         move to workspace $ws2
-for_window [class="^ticktick"]     move to workspace $ws3
-for_window [class="Notepadqq"]     move to workspace $ws8
-for_window [class="Code"]          move to workspace $ws9
-for_window [class="Alacritty"]     move to workspace $ws0
+for_window [class="Brave-browser"]    move to workspace $ws1
+for_window [class="Slack"]            move to workspace $ws2
+for_window [class="sidekick-browser"] move to workspace $ws3
+for_window [class="Notepadqq"]        move to workspace $ws8
+for_window [class="Code"]             move to workspace $ws9
+for_window [class="Alacritty"]        move to workspace $ws0
 
 # application's default floating
 for_window [class="Thunar"] floating enable
@@ -163,7 +163,8 @@ exec --no-startup-id volumeicon
 
 exec --no-startup-id brave
 exec --no-startup-id slack
-exec --no-startup-id ticktick
+# exec --no-startup-id ticktick
+exec --no-startup-id sidekick-browser-stable
 exec --no-startup-id notepadqq
 exec --no-startup-id code
 exec --no-startup-id alacritty

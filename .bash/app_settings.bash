@@ -115,6 +115,9 @@ if type direnv >/dev/null 2>&1; then eval "$(direnv hook bash)"; fi
 [ -e ~/.cargo/bin ] && export PATH=$PATH:~/.cargo/bin
 [ -e ~/.local/bin ] && export PATH=$PATH:~/.local/bin
 
+# ocaml
+[ -e ~/.opam ] && test -r /home/kaave/.opam/opam-init/init.sh && . /home/kaave/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
 # Android
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 if [ -e $ANDROID_HOME ]; then
