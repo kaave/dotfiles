@@ -48,61 +48,63 @@ call deoplete#custom#option({
 # let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
 # '''
 
-# [[plugins]]
-# repo = 'scrooloose/nerdtree'
-# hook_add = '''
-# " open on vim started (exclude when it open with filename)
-# autocmd StdinReadPre * let s:std_in=1
-# autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && !has('gui_running') | NERDTree | endif
-#
-# " open hidden files
-# let NERDTreeShowHidden = 1
-#
-# " set indicators
-# let g:NERDTreeIndicatorMapCustom = {
-#     \ "Modified"  : "*",
-#     \ "Staged"    : "+",
-#     \ "Untracked" : "!",
-#     \ "Renamed"   : "-",
-#     \ "Unmerged"  : "=",
-#     \ "Deleted"   : "x",
-#     \ "Dirty"     : "X",
-#     \ "Clean"     : "$",
-#     \ "Unknown"   : "?"
-#     \ }
-#
-# " NERDTress File highlighting
-# function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-#  exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-#  exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-# endfunction
-#
-# " extension, fg, bg, guifg, guibg
-# call NERDTreeHighlightFile('py',     'yellow',  'none', 'yellow',  '#151515')
-# call NERDTreeHighlightFile('md',     'blue',    'none', '#3366FF', '#151515')
-# call NERDTreeHighlightFile('yml',    'yellow',  'none', 'yellow',  '#151515')
-# call NERDTreeHighlightFile('config', 'yellow',  'none', 'yellow',  '#151515')
-# call NERDTreeHighlightFile('conf',   'yellow',  'none', 'yellow',  '#151515')
-# call NERDTreeHighlightFile('json',   'yellow',  'none', 'yellow',  '#151515')
-# call NERDTreeHighlightFile('html',   'yellow',  'none', 'yellow',  '#151515')
-# call NERDTreeHighlightFile('styl',   'cyan',    'none', 'cyan',    '#151515')
-# call NERDTreeHighlightFile('css',    'cyan',    'none', 'cyan',    '#151515')
-# call NERDTreeHighlightFile('rb',     'Red',     'none', 'red',     '#151515')
-# call NERDTreeHighlightFile('js',     'Red',     'none', '#ffa500', '#151515')
-# call NERDTreeHighlightFile('jsx',    'Red',     'none', '#ffa500', '#151515')
-# call NERDTreeHighlightFile('php',    'Magenta', 'none', '#ff00ff', '#151515')
-#
-# " ignore
-# let NERDTreeIgnore=['\.DS_Store$']
-#
-# " keymapping
-# nnoremap <F9> :NERDTreeToggle<CR>
-# '''
-#
-# [[plugins]]
-# repo = 'Xuyuanp/nerdtree-git-plugin'
-# depends = 'nerdtree'
-#
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+" open on vim started (exclude when it open with filename)
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") && !has('gui_running') | NERDTree | endif
+
+" open hidden files
+let NERDTreeShowHidden = 1
+
+" set indicators
+
+" let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+    \ "Modified"  : "*",
+    \ "Staged"    : "+",
+    \ "Untracked" : "!",
+    \ "Renamed"   : "-",
+    \ "Unmerged"  : "=",
+    \ "Deleted"   : "x",
+    \ "Dirty"     : "X",
+    \ "Clean"     : "$",
+    \ "Unknown"   : "?"
+    \ }
+
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+ exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+" extension, fg, bg, guifg, guibg
+call NERDTreeHighlightFile('py',     'yellow',  'none', 'yellow',  '#151515')
+call NERDTreeHighlightFile('md',     'blue',    'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('yml',    'yellow',  'none', 'yellow',  '#151515')
+call NERDTreeHighlightFile('config', 'yellow',  'none', 'yellow',  '#151515')
+call NERDTreeHighlightFile('conf',   'yellow',  'none', 'yellow',  '#151515')
+call NERDTreeHighlightFile('json',   'yellow',  'none', 'yellow',  '#151515')
+call NERDTreeHighlightFile('html',   'yellow',  'none', 'yellow',  '#151515')
+call NERDTreeHighlightFile('styl',   'cyan',    'none', 'cyan',    '#151515')
+call NERDTreeHighlightFile('css',    'cyan',    'none', 'cyan',    '#151515')
+call NERDTreeHighlightFile('rb',     'Red',     'none', 'red',     '#151515')
+call NERDTreeHighlightFile('js',     'Red',     'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('jsx',    'Red',     'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('php',    'Magenta', 'none', '#ff00ff', '#151515')
+
+" ignore
+let NERDTreeIgnore=['\.DS_Store$']
+
+" keymapping
+nnoremap <F9> :NERDTreeToggle<CR>
+'''
+
+[[plugins]]
+repo = 'Xuyuanp/nerdtree-git-plugin'
+depends = 'nerdtree'
+
 
 [[plugins]]
 repo = 'Shougo/defx.nvim'
@@ -180,28 +182,9 @@ vmap <C-c> <Plug>(caw:hatpos:toggle)
 [[plugins]]
 repo = 'tpope/vim-surround'
 
-# [[plugins]]
-# repo = 'thinca/vim-quickrun'
-# depends = '''
-# let g:quickrun_config = {}
-# if has("mac")
-#     let g:quickrun_config.markdown = {
-#                 \ 'outputter' : 'null',
-#                 \ 'command'   : 'open',
-#                 \ 'cmdopt'    : '-a',
-#                 \ 'args'      : '"Marked 2"',
-#                 \ 'exec'      : '%c %o %a %s',
-#                 \ }
-# endif
-# nnoremap <silent> <C-@> :QuickRun<CR>
-# '''
-#
 # html, css, sass
 [[plugins]]
 repo = 'mattn/emmet-vim'
-
-# [[plugins]]
-# repo = 'othree/html5.vim'
 
 [[plugins]]
 repo = 'digitaltoad/vim-pug'
@@ -403,18 +386,16 @@ on_ft = ['fish']
 #
 #
 #
-# # " ----------------------------------------------
-# # " plugin settings
-# # " ----------------------------------------------
-# # " 色指定
-# # set background=dark
-# #
-# # " カラースキーム
-# # let scheme = 'solarized'
-# # augroup guicolorscheme
-# #     autocmd!
-# #     execute 'autocmd VimEnter * nested colorscheme' scheme
-# # augroup END
-#
-#
-#
+
+# theme
+# FIXME: White out
+# [[plugins]]
+# repo = 'altercation/vim-colors-solarized'
+# hook_add = '''
+# set background=dark
+# let scheme = 'solarized'
+# augroup guicolorscheme
+#     autocmd!
+#     execute 'autocmd VimEnter * nested colorscheme' scheme
+# augroup END
+# '''
