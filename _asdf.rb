@@ -7,7 +7,7 @@ setup_repository = "git clone https://github.com/asdf-vm/asdf.git #{asdf_path} &
 plugins = [
   {
     name: :ruby,
-    versions: ['3.0.0'],
+    versions: ['3.0.2'],
     default_packages: {
       from: '~/dotfiles/default_libraries/default-gems',
       to: '~/.default-gems'
@@ -15,7 +15,7 @@ plugins = [
   },
   {
     name: :nodejs,
-    versions: ['14.15.4'],
+    versions: ['14.17.4'],
     default_packages: {
       from: '~/dotfiles/default_libraries/default-npms',
       to: '~/.default-npm-packages'
@@ -26,7 +26,7 @@ plugins = [
   },
   {
     name: :python,
-    versions: ['3.9.1', '2.7.18'],
+    versions: ['3.9.7', '2.7.18'],
     default_packages: {
       from: '~/dotfiles/default_libraries/default-pips',
       to: '~/.default-python-packages'
@@ -62,10 +62,10 @@ plugins = [
   #   name: :haxe,
   #   versions: ['4.0.5']
   # },
-  {
-    name: :flutter,
-    versions: ['1.22.5-stable']
-  },
+  # {
+  #   name: :flutter,
+  #   versions: ['1.22.5-stable']
+  # },
 ]
 
 `#{setup_repository}`
