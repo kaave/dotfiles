@@ -8,7 +8,7 @@
 SetKeyDelay 0
 
 ; -----------------------------------------
-; key remaps
+; Launcher
 ; -----------------------------------------
 
 >^1:: ;Brave
@@ -34,8 +34,6 @@ SetKeyDelay 0
   Else
     Run C:\Users\kaave\AppData\Local\Sidekick\Application\sidekick.exe
   Return
-
-
 
 >^6:: ;Authy
   Process,Exist,Authy Desktop.exe
@@ -78,9 +76,25 @@ SetKeyDelay 0
   Return
 
 >^+Enter:: ; Explorer++
-  Process,Exist,Explorer++.exe
+  Process,Exist,TE64.exe
   If ErrorLevel <> 0
     WinActivate,ahk_pid %ErrorLevel%
   Else
-    Run C:\Apps\explorer++\Explorer++.exe
+    Run C:\Apps\Tablacus Explorer\TE64.exe
+  Return
+
+; -----------------------------------------
+; Utils
+; -----------------------------------------
+
+; Current Date / Time
+; @see https://www.autohotkey.com/docs/commands/FormatTime.htm
+>^+`;:: ; Current Date
+  FormatTime,TimeString,,yyyy-M-dd
+  Send,%TimeString%
+  Return
+
+>^+':: ; Current Time
+  FormatTime,TimeString,,H:mm
+  Send,%TimeString%
   Return
