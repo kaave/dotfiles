@@ -2,7 +2,6 @@ npm
 yarn
 firebase-tools
 neovim
-
 textlint
 textlint-rule-spellcheck-tech-word
 textlint-rule-no-mix-dearu-desumasu
