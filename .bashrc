@@ -1,3 +1,8 @@
+initialized=`ls .bash/bin/ | wc -l`
+if [ "${initialized}" = "0" ]; then
+    bash ~/.bash/_setup.bash
+fi
+
 source ~/.bash/aliases.bash
 source ~/.bash/functions.bash
 source ~/.bash/global.bash

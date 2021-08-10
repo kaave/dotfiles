@@ -39,7 +39,13 @@ if type xsel >/dev/null 2>&1; then
     alias pbpaste='xsel --clipboard --output'
 fi
 
+# fzf
 if type fzf >/dev/null 2>&1; then
-    source /usr/share/fzf/key-bindings.bash
-    source /usr/share/fzf/completion.bash
+    if [ -e /usr/share/doc/fzf/examples ]; then
+        source /usr/share/doc/fzf/examples/key-bindings.bash
+        source /usr/share/doc/fzf/examples/completion.bash
+    elif [ -e /usr/share/fzf ]; then
+        source /usr/share/fzf/key-bindings.bash
+        source /usr/share/fzf/completion.bash
+    fi
 fi
