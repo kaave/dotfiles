@@ -52,3 +52,6 @@ fi
 [ -e /Applications/Emacs.app ] && alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw --"
 [ -e /Applications/SourceTree.app ] && alias sourcetree="open -a SourceTree"
 [ -e '/Applications/Marked 2.app' ] && alias mark='open -a "Marked 2"'
+
+# eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="/opt/homebrew/bin:$PATH"

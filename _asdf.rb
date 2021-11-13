@@ -15,7 +15,7 @@ plugins = [
   },
   {
     name: :nodejs,
-    versions: ['14.17.4'],
+    versions: ['16.13.0'],
     default_packages: {
       from: '~/dotfiles/default_libraries/default-npms',
       to: '~/.default-npm-packages'
@@ -26,13 +26,13 @@ plugins = [
   },
   {
     name: :python,
-    versions: ['3.9.7', '2.7.18'],
+    versions: ['3.10.0', '2.7.18'],
     default_packages: {
       from: '~/dotfiles/default_libraries/default-pips',
       to: '~/.default-python-packages'
     },
     post_install_tasks: [
-      `bash -lc "asdf rehash python`
+      `bash -lc "asdf reshim python"`
     ]
   },
   # {
@@ -45,10 +45,6 @@ plugins = [
   # {
   #   name: :java,
   #   versions: ['adopt-openjdk-13.0.1+9_openj9-0.17.0']
-  # },
-  # {
-  #   name: :scala,
-  #   versions: ['2.13.1']
   # },
   # {
   #   name: :erlang,
