@@ -174,6 +174,13 @@ if type fzf >/dev/null 2>&1; then
                     {}
                     FZF-EOF"
     }
+
+    pr-checkout() {
+        local prs pr
+        prs=$(gh pr list)
+        pr=$(echo "$prs" | fzf +s | sed -E 's/([0-9]+).*/\1/')
+        gh pr checkout $pr
+    }
 fi
 
 # vscode alias
