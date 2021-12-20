@@ -1,7 +1,5 @@
-initialized=`ls .bash/bin/ | wc -l`
-if [ "${initialized}" = "0" ]; then
-    bash ~/.bash/_setup.bash
-fi
+initialized=$(ls .bash/bin/ | wc -l | sed 's/^ *\| *$//')
+[ "${initialized}" = "0" ] && bash ~/.bash/_setup.bash
 
 source ~/.bash/aliases.bash
 source ~/.bash/functions.bash
@@ -11,9 +9,9 @@ source ~/.bash/key_bindings.bash
 
 [ -e ~/.bash/_private.bash ] && source ~/.bash/_private.bash
 
-if [ `uname` = "Darwin" ]; then
+if [ $(uname) = "Darwin" ]; then
     source ~/.bash/mac.bash
-elif [ `uname` = "Linux" ]; then
+elif [ $(uname) = "Linux" ]; then
     source ~/.bash/linux.bash
 fi
 
@@ -21,14 +19,14 @@ if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ 
     # run tmux on startup
     if type tmux >/dev/null 2>&1; then
         if [ -z $TMUX -a $(echo $- | grep -v 'l') ]; then
-            ID="`tmux ls 2> /dev/null`"
+            ID="$(tmux ls 2> /dev/null)"
             if [ -z "$ID" ]; then
                 tmux -u new-session
             else
                 new_session="Start New Session"
                 IDs="$ID"
                 IDs+="\n$new_session:"
-                choosed_session=`echo -e "$IDs" | fzf | cut -d: -f1`
+                choosed_session=$(echo -e "$IDs" | fzf | cut -d: -f1)
                 if [ "$choosed_session" = "${new_session}" ]; then
                     tmux -u new-session
                 elif [ -n "$choosed_session" ]; then
@@ -40,7 +38,7 @@ if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ 
         fi
     fi
 
-    if [ `uname` = "Linux" ]; then
+    if [ $(uname) = "Linux" ]; then
         # set key repeat
         xset r rate 200 40
     fi

@@ -40,13 +40,6 @@ if type nvim >/dev/null 2>&1; then
 
     export GIT_EDITOR="env LANG=ja_JP.UTF-8 nvim -f"
     export EDITOR=nvim
-elif [ -e /Applications/MacVim.app/ ]; then
-    export MACVIM_PATH=/Applications/MacVim.app/Contents/MacOS
-    export EDITOR=$MACVIM_PATH/Vim
-    alias vim="env LANG=ja_JP.UTF-8 $MACVIM_PATH/Vim "'"$@"'
-    alias vi=vim
-    alias vimdiff=$MACVIM_PATH/vimdiff
-    alias view=$MACVIM_PATH/view
 fi
 
 [ -e /Applications/Emacs.app ] && alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs -nw --"

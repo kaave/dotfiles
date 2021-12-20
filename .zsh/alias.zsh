@@ -8,21 +8,12 @@ alias mkdir='mkdir -p'
 # sudo の後のコマンドでエイリアスを有効にする
 alias sudo='sudo '
 
-# htopをtop
 [ -x "`which htop`" ] && alias top=htop
-
-# gitをhub
 [ -x "`which hub`" ] && alias git=hub
+[ -x "`which exa`" ] && alias ls=exa
+[ -x "`which bat`" ] && alias cat=bat
+[ -x "`which code`" ] && alias cr='code . -r'
 
-# ls to exa
-if [ -x "`which exa`" ]; then
-    alias ls=exa
-else
-    # ls 色付け
-    export CLICOLOR=1
-    export LSCOLORS=gxfxcxdxbxegedabagacad
-    alias ls='ls -G -F'
-fi
 
 # グローバルエイリアス
 alias -g L='| less'
@@ -43,40 +34,36 @@ elif which putclip >/dev/null 2>&1 ; then
     alias -g C='| putclip'
 fi
 
-# Pythonの簡易サーバ
-alias pysv='python -m SimpleHTTPServer'
-
 # get .gitignore template
 function gi() {
     curl -L -s https://www.gitignore.io/api/$@ ;
 }
 
-alias ssht='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 # char aliases
 # alias a=
-# alias b=
-# alias c=
-# alias d=
+alias b=bundle
+alias c=cat
+alias d=dotnet
 alias e=emacs
-# alias f=
+# alias f
 alias g=git
-# alias h=
-# alias i=
-# alias j=
-# alias k=
-# alias l=
-# alias m=
+# alias h
+# alias i
+# alias j
+# alias k
+# alias l
+alias m=make
 alias n=node
 alias o=open
-# alias p=
-# alias q=
-# alias r=
+# alias p
+# alias q
+# alias r
 alias s=stack
-# alias t=top
-# alias u=
-# alias v=
-# alias w=
-# alias x=
+# alias t
+# alias u
+# alias v
+# alias w
+# alias x
 alias y=yarn
-# alias z=
+# alias z

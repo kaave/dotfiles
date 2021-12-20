@@ -7,12 +7,10 @@ PROMPT="%F{magenta}%d %(?,%F{white},%F{red})%#%f "
 if [ -x "`which nvim`" ];  then
     alias vi='nvim'
     alias vim='nvim'
-elif [ -x "`which vim`" ];  then
-    alias vi='vim'
-    alias view='vim -R'
+    alias vimdiff='nvim -d '
 
-    # manをvimで見る
-    export MANPAGER="col -b -x|vim -R -c 'set ft=man nolist nomod noma' -"
+    export GIT_EDITOR="env LANG=ja_JP.UTF-8 nvim -f"
+    export EDITOR=nvim
 fi
 
 # copy to clipboard
@@ -21,3 +19,13 @@ if [ -x "`which xsel`" ]; then
     alias pbpaste='xsel --clipboard --output'
 fi
 
+# fzf
+if type fzf >/dev/null 2>&1; then
+    if [ -e /usr/share/doc/fzf/examples ]; then
+        source /usr/share/doc/fzf/examples/key-bindings.bash
+        source /usr/share/doc/fzf/examples/completion.bash
+    elif [ -e /usr/share/fzf ]; then
+        source /usr/share/fzf/key-bindings.bash
+        source /usr/share/fzf/completion.bash
+    fi
+fi

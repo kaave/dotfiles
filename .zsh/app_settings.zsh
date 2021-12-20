@@ -10,6 +10,7 @@ if [ -x "`which docker`" ]; then
     alias dkd="docker run -d -P"
     alias dki="docker run -i -t -P"
     alias dex="docker exec -i -t"
+
     dstop() { docker stop $(docker ps -a -q); }
     drm() { docker rm $(docker ps -a -q); }
     alias drmf='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)'
@@ -24,14 +25,9 @@ fi
 # vagrant
 if [ -x "`which vagrant`" ]; then
     alias vg='vagrant'
-    # vagrant default provider
-    export VAGRANT_DEFAULT_PROVIDER=virtualbox
     # Vagrantでupしてssh
     alias vgus='vagrant up;vagrant ssh'
 fi
-
-# anyenv
-[ -e ~/.anyenv/ ] && eval "$(anyenv init - zsh)"
 
 # direnv
 [ -x "`which direnv`" ] && eval "$(direnv hook zsh)"
