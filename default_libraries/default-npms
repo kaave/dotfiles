@@ -1,6 +1,6 @@
 npm
 yarn
-firebase-tools
+bash-language-server
 neovim
 textlint
 textlint-rule-spellcheck-tech-word

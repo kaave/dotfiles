@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+set -u
+
+COLOR_RED='\033[0;31m'
+COLOR_BLUE='\033[0;36m'
+COLOR_NC='\033[0m' # No Color
+
+links=(
+    # shell
+    ".bash"
+    ".bashrc"
+    ".bash_profile"
+    ".inputrc"
+
+    # linter
+    ".textlintrc"
+
+    # tmux
+    ".tmux.conf"
+
+    # git
+    ".gitconfig"
+
+    # gem
+    ".gemrc"
+
+    # vim (and clones)
+    ".vim"
+    ".vimrc"
+    ".gvimrc"
+    ".ideavimrc"
+
+    # emacs
+    ".emacs.d"
+
+    # language support tools
+    ".ctags"
+    ".tern-project"
+)
+
+# .config links
+config_links=(
+    "alacritty"
+    "nvim"
+    "powerline"
+    "rofi"
+)
+
+# tpm = Tmux Plugin Manager
+tpm_path="$HOME/.tmux/plugins/tpm"
+
+setup_macos() {
+  links=("${links[@]}" ".xvimrc")
+  config_links=("${config_links[@]}" "karabiner")
+}
+
+setup_linux() {
+  links=(
+    "${links[@]}"
+    ".xinitrc"
+    ".Xresources"
+    ".xsession"
+  )
+
+  config_links=(
+    "${config_links[@]}"
+    "awesome"
+    "fontconfig"
+  )
+}
+
+create_symlink() {
+  # if ln -s "$1" "$2"; then
+  if echo "$1" "$2"; then
+    echo -e "${COLOR_BLUE}Create symlink succeeded:${COLOR_NC} $2"
+  else
+    echo -e "${COLOR_RED}Create symlink failed:${COLOR_NC} $2"
+  fi
+}
+
+main() {
+  if ! type git >/dev/null 2>&1; then
+    echo -e "${COLOR_RED}git command not found.${COLOR_NC}"
+    exit 1
+  fi
+
+  if [ "$(uname)" = "Darwin" ]; then
+    setup_macos
+    echo "Running on macOS."
+  elif [ "$(uname)" = "Linux" ]; then
+    setup_linux
+    echo "Running on Linux."
+  fi
+
+  for link in "${links[@]}"; do
+    create_symlink "$HOME/dotfiles/$link" "$HOME/$link"
+  done
+
+  for link in "${config_links[@]}"; do
+    create_symlink "$HOME/dotfiles/.config/$link" "$HOME/.config/$link"
+  done
+
+  if [ ! -d "$tpm_path" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$tpm_path"
+    echo "tmux plugins cloned: $tpm_path"
+  fi
+
+  echo "-----------"
+  echo -e "${COLOR_BLUE}Dotfiles setup finished.${COLOR_NC}"
+}
+
+main
