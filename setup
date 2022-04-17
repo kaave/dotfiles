@@ -71,8 +71,7 @@ setup_linux() {
 }
 
 create_symlink() {
-  # if ln -s "$1" "$2"; then
-  if echo "$1" "$2"; then
+  if ln -sf "$1" "$2"; then
     echo -e "${COLOR_BLUE}Create symlink succeeded:${COLOR_NC} $2"
   else
     echo -e "${COLOR_RED}Create symlink failed:${COLOR_NC} $2"
@@ -96,6 +95,11 @@ main() {
   for link in "${links[@]}"; do
     create_symlink "$HOME/dotfiles/$link" "$HOME/$link"
   done
+
+  if [ ! -d "$HOME/.config" ]; then
+    mkdir -p "$HOME/.config"
+    echo "Create .config dir."
+  fi
 
   for link in "${config_links[@]}"; do
     create_symlink "$HOME/dotfiles/.config/$link" "$HOME/.config/$link"
