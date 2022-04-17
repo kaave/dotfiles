@@ -50,6 +50,7 @@ Temporary Items
 !.config/alacritty
 !.config/awesome
 !.config/karabiner
+.config/karabiner/automatic_backups
 !.config/nvim
 !.config/powerline
 !.config/rofi

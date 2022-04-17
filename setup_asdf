@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -u
+
+COLOR_RED='\033[0;31m'
+COLOR_BLUE='\033[0;36m'
+COLOR_NC='\033[0m' # No Color
+
+asdf_path="$HOME/.asdf"
+
+ruby_version=3.1.2
+nodejs_version=16.14.2
+python_version=3.10.4
+
+show_version_commands=()
+
+push_show_version_command() {
+  show_version_commands=("${show_version_commands[@]}" "$1")
+}
+
+create_symlink() {
+  if ln -sf "$1" "$2"; then
+    echo -e "${COLOR_BLUE}Create symlink succeeded:${COLOR_NC} $2"
+  else
+    echo -e "${COLOR_RED}Create symlink failed:${COLOR_NC} $2"
+  fi
+}
+
+setup_repository() {
+  if [ ! -d "$asdf_path" ]; then
+    git clone https://github.com/asdf-vm/asdf.git "$asdf_path"
+    echo "asdf cloned: $asdf_path"
+  fi
+
+  cd "$asdf_path" && git checkout "$(git describe --abbrev=0 --tags)"
+}
+
+setup_ruby() {
+  bash -lc "asdf plugin-add ruby"
+  create_symlink "$HOME/dotfiles/default_libraries/default-gems" "$HOME/.default-gems"
+  bash -lc "asdf install ruby $ruby_version"
+  bash -lc "asdf global ruby $ruby_version"
+
+  push_show_version_command "ruby --version"
+}
+
+setup_nodejs() {
+  bash -lc "asdf plugin-add nodejs"
+  bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+  create_symlink "$HOME/dotfiles/default_libraries/default-npms" "$HOME/.default-npm-packages"
+  bash -lc "asdf install nodejs $nodejs_version"
+  bash -lc "asdf global nodejs $nodejs_version"
+
+  push_show_version_command "node --version"
+}
+
+setup_python() {
+  bash -lc "asdf plugin-add python"
+  create_symlink "$HOME/dotfiles/default_libraries/default-pips" "$HOME/.default-python-packages"
+  bash -lc "asdf install python $python_version"
+  bash -lc "asdf global python $python_version"
+  bash -lc "asdf reshim python"
+
+  push_show_version_command "python --version"
+}
+
+main() {
+  setup_repository
+  setup_ruby
+  setup_nodejs
+  setup_python
+
+  echo "-----------"
+  echo -e "${COLOR_BLUE}asdf setup finished.${COLOR_NC}"
+  echo ""
+  for command in "${show_version_commands[@]}"; do
+    bash -lc "$command"
+  done
+}
+
+main
