@@ -11,6 +11,9 @@ links=(
     ".bash"
     ".bashrc"
     ".bash_profile"
+    ".zsh"
+    ".zshrc"
+    ".zshenv"
     ".inputrc"
 
     # linter
