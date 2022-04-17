@@ -18,8 +18,6 @@ if [ -x "`which docker`" ]; then
     dbu() { docker build -t=$1 .; }
     dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
     dbash() { docker exec -it $(docker ps -aqf "name=$1") bash; }
-
-    [ -x "`which docker-sync-stack`" ] && alias dss='docker-sync-stack'
 fi
 
 # vagrant
@@ -29,14 +27,15 @@ if [ -x "`which vagrant`" ]; then
     alias vgus='vagrant up;vagrant ssh'
 fi
 
-# direnv
-[ -x "`which direnv`" ] && eval "$(direnv hook zsh)"
-
 # composer
 [ -e ~/.composer ] && export PATH=$PATH:~/.composer/vendor/bin
 
 # python
-[ -x "`which python3`" ] && alias venv='python3 -m venv'
+if [ -x "`which python`" ]; then
+  alias venv='python -m venv'
+  alias pysv='python -m SimpleHTTPServer'
+fi
+
 if [ -x "`which pipenv`" ]; then
     PIPENV_VENV_IN_PROJECT=1
     alias pe='pipenv'
@@ -51,6 +50,73 @@ if [ -x "`which pipenv`" ]; then
     palias() { alias | grep 'pipenv' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
     eval "$(pipenv --completion)"
 fi
+
+# Ruby
+# remove bundle exec
+RUBYGEMS_GEMDEPS=-
+# bundler
+if [ -x "`which bundle`" ]; then
+    alias bl='bundle'
+    alias be='bundle exec'
+    alias bi='bundle install'
+    alias binit='bundle install --path=vendor/bundle -j4'
+    balias() { alias | grep 'bundle' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
+fi
+
+# haskell
+if [ -x "`which stack`" ]; then
+    alias ghc='stack ghc --'
+    alias ghci='stack ghci --'
+    alias runghc='stack runghc --'
+    alias runhaskell='stack runhaskell --'
+fi
+
+# rustup
+[ -e ~/.cargo/bin ] && export PATH="$HOME/.cargo/bin:$PATH"
+[ -e ~/.local/bin ] && export PATH="$HOME/.local/bin:$PATH"
+
+# anyenv
+if [ -e ~/.anyenv/ ]; then
+    export PATH="$HOME/.anyenv/bin:$PATH"
+    eval "$(anyenv init - bash)"
+fi
+
+# asdf
+[ -e ~/.asdf/ ] && . $HOME/.asdf/asdf.sh
+
+# direnv
+[ -x "`which stack`" ] && eval "$(direnv hook zsh)"
+
+# fzf
+if [ -x "`which fzf`" ]; then
+    if [ -f ~/.fzf.zsh ]; then
+        source ~/.fzf.zsh
+    fi
+fi
+
+# VS Code
+[ -x "`which code`" ] && alias cr='code . -r'
+
+# z
+# if [ -e ~/.bash/bin/z.sh ]; then
+#     source ~/.bash/bin/z.sh
+
+#     if type fzf >/dev/null 2>&1; then
+#         __z() {
+#             if [[ -z "$*" ]]; then
+#                 cd "$(z -lx 2>&1 | awk '{print $2}' | fzf +s --tac)"
+#                 echo
+#             else
+#                 _last_z_args="$@"
+#                 z "$@"
+#             fi
+#         }
+
+#         zz() {
+#             cd "$(z -lx 2>&1 | awk '{print $2}' | fzf -q "$_last_z_args")"
+#         }
+#     fi
+# fi
 
 ##-begin-npm-completion-################
 #
@@ -105,37 +171,4 @@ elif type compctl &>/dev/null; then
   compctl -K _npm_completion npm
 fi
 ###-end-npm-completion-#################
-
-# Go
-if [ -x "`which go`" ]; then
-    export GOROOT=`go env GOROOT`
-    export GOPATH_ROOT=$HOME/go
-    export GOPATH_THIRD_PARTY=$GOPATH_ROOT/third-party
-    export GOPATH_MY_PROJECT=$GOPATH_ROOT/my-project
-    export GOPATH=$GOPATH_THIRD_PARTY:$GOPATH_MY_PROJECT
-    export PATH=$PATH:$GOROOT/bin:$GOPATH_THIRD_PARTY/bin:$GOPATH_MY_PROJECT/bin
-fi
-
-# Ruby
-# remove bundle exec
-RUBYGEMS_GEMDEPS=-
-# bundler
-if [ -x "`which bundle`" ]; then
-    alias bl='bundle'
-    alias be='bundle exec'
-    alias bi='bundle install'
-    balias() { alias | grep 'bundle' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
-fi
-
-# rustup
-[ -e ~/.cargo/bin ] && export PATH="$HOME/.cargo/bin:$PATH"
-
-# haskell
-[ -e ~/.local/bin ] && export PATH="$HOME/.local/bin:$PATH"
-if [ -x "`which stack`" ]; then
-    alias ghc='stack ghc --'
-    alias ghci='stack ghci --'
-    alias runghc='stack runghc --'
-    alias runhaskell='stack runhaskell --'
-fi
 

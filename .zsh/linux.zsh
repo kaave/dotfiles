@@ -13,7 +13,6 @@ if [ -x "`which nvim`" ];  then
     export EDITOR=nvim
 fi
 
-# copy to clipboard
 if [ -x "`which xsel`" ]; then
     alias pbcopy='xsel --clipboard --input'
     alias pbpaste='xsel --clipboard --output'

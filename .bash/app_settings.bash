@@ -18,10 +18,6 @@ if type docker >/dev/null 2>&1; then
     dbu() { docker build -t=$1 .; }
     dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
     dbash() { docker exec -it $(docker ps -aqf "name=$1") bash; }
-
-    if type docker-sync-stack >/dev/null 2>&1; then
-        alias dss='docker-sync-stack'
-    fi
 fi
 
 # vagrant

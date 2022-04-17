@@ -5,26 +5,29 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias mkdir='mkdir -p'
 
-# sudo の後のコマンドでエイリアスを有効にする
+# enable aliases for `sudo`
 alias sudo='sudo '
 
 [ -x "`which htop`" ] && alias top=htop
 [ -x "`which hub`" ] && alias git=hub
 [ -x "`which exa`" ] && alias ls=exa
 [ -x "`which bat`" ] && alias cat=bat
-[ -x "`which code`" ] && alias cr='code . -r'
 
-
-# グローバルエイリアス
+#
+# global aliases.
+#
 alias -g L='| less'
 alias -g G='| grep'
 alias -g M='| more'
 
-# C で標準出力をクリップボードにコピーする
-# echo 'foobar' C # という感じ
-# mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
+# copy stdout to clipboard.
+#
+# example:
+#   echo 'foobar' C
+#
+# see: http://mollifier.hatenablog.com/entry/20100317/p1
 if which pbcopy >/dev/null 2>&1 ; then
-    # Mac
+    # macOS
     alias -g C='| pbcopy'
 elif which xsel >/dev/null 2>&1 ; then
     # Linux
@@ -33,12 +36,6 @@ elif which putclip >/dev/null 2>&1 ; then
     # Cygwin
     alias -g C='| putclip'
 fi
-
-# get .gitignore template
-function gi() {
-    curl -L -s https://www.gitignore.io/api/$@ ;
-}
-
 
 # char aliases
 # alias a=
