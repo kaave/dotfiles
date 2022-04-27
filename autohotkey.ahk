@@ -11,20 +11,20 @@ SetKeyDelay 0
 ; Launcher
 ; -----------------------------------------
 
->^1:: ;Brave
-  Process,Exist,brave.exe
-  If ErrorLevel <> 0
-    WinActivate,ahk_pid %ErrorLevel%
-  Else
-    Run C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe
-  Return
-
->^+1:: ;Firefox
+>^1:: ;Firefox
   Process,Exist,firefox.exe
   If ErrorLevel <> 0
     WinActivate,ahk_pid %ErrorLevel%
   Else
     Run C:\Users\kaave\scoop\apps\firefox-developer\current
+  Return
+
+>^+1:: ;Brave
+  Process,Exist,brave.exe
+  If ErrorLevel <> 0
+    WinActivate,ahk_pid %ErrorLevel%
+  Else
+    Run C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe
   Return
 
 >^2:: ;Slack
