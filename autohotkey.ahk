@@ -16,7 +16,7 @@ SetKeyDelay 0
   If ErrorLevel <> 0
     WinActivate,ahk_pid %ErrorLevel%
   Else
-    Run C:\Users\kaave\scoop\apps\firefox-developer\current
+    Run C:\Users\kaave\scoop\apps\firefox-developer\current\firefox.exe
   Return
 
 >^+1:: ;Brave
