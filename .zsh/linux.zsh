@@ -21,10 +21,10 @@ fi
 # fzf
 if type fzf >/dev/null 2>&1; then
     if [ -e /usr/share/doc/fzf/examples ]; then
-        source /usr/share/doc/fzf/examples/key-bindings.bash
-        source /usr/share/doc/fzf/examples/completion.bash
+        source /usr/share/doc/fzf/examples/key-bindings.zsh
+        source /usr/share/doc/fzf/examples/completion.zsh
     elif [ -e /usr/share/fzf ]; then
-        source /usr/share/fzf/key-bindings.bash
-        source /usr/share/fzf/completion.bash
+        source /usr/share/fzf/key-bindings.zsh
+        source /usr/share/fzf/completion.zsh
     fi
 fi

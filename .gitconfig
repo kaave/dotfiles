@@ -6,7 +6,7 @@
     editor = nvim
     autocrlf = input
     ignorecase = false
-    pager = delta --theme='Solarized (dark)'
+    pager = delta
 [interactive]
     diffFilter = delta --color-only
 [color]
