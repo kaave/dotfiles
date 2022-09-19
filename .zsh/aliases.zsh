@@ -53,7 +53,7 @@ alias g=git
 alias m=make
 alias n=node
 alias o=open
-# alias p
+alias p=pnpm
 # alias q
 # alias r
 alias s=stack
