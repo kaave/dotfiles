@@ -33,7 +33,7 @@ fi
 # python
 if [ -x "`which python`" ]; then
   alias venv='python -m venv'
-  alias pysv='python -m SimpleHTTPServer'
+  alias pysv='python -m http.server'
 fi
 
 if [ -x "`which pipenv`" ]; then
