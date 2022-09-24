@@ -57,7 +57,7 @@ alias p=pnpm
 # alias q
 # alias r
 alias s=stack
-# alias t
+alias t=terraform
 # alias u
 # alias v
 # alias w

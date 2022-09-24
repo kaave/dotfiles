@@ -46,3 +46,4 @@ if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ 
         xset r rate 200 40
     fi
 fi
+
