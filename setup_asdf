@@ -11,6 +11,8 @@ asdf_path="$HOME/.asdf"
 ruby_version=3.1.2
 nodejs_version=16.14.2
 python_version=3.10.4
+bazel_version=5.3.1
+terraform_version=1.3.0
 
 show_version_commands=()
 
@@ -36,7 +38,7 @@ setup_repository() {
 }
 
 setup_ruby() {
-  bash -lc "asdf plugin-add ruby"
+  bash -lc "asdf plugin add ruby"
   create_symlink "$HOME/dotfiles/default_libraries/default-gems" "$HOME/.default-gems"
   bash -lc "asdf install ruby $ruby_version"
   bash -lc "asdf global ruby $ruby_version"
@@ -45,7 +47,7 @@ setup_ruby() {
 }
 
 setup_nodejs() {
-  bash -lc "asdf plugin-add nodejs"
+  bash -lc "asdf plugin add nodejs"
   bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
   create_symlink "$HOME/dotfiles/default_libraries/default-npms" "$HOME/.default-npm-packages"
   bash -lc "asdf install nodejs $nodejs_version"
@@ -55,7 +57,7 @@ setup_nodejs() {
 }
 
 setup_python() {
-  bash -lc "asdf plugin-add python"
+  bash -lc "asdf plugin add python"
   create_symlink "$HOME/dotfiles/default_libraries/default-pips" "$HOME/.default-python-packages"
   bash -lc "asdf install python $python_version"
   bash -lc "asdf global python $python_version"
@@ -64,11 +66,29 @@ setup_python() {
   push_show_version_command "python --version"
 }
 
+setup_bazel() {
+  bash -lc "asdf plugin add bazel"
+  bash -lc "asdf install bazel $bazel_version"
+  bash -lc "asdf global bazel $bazel_version"
+
+  push_show_version_command "bazel --version"
+}
+
+setup_terraform() {
+  bash -lc "asdf plugin add terraform"
+  bash -lc "asdf install terraform $terraform_version"
+  bash -lc "asdf global terraform $terraform_version"
+
+  push_show_version_command "terraform --version"
+}
+
 main() {
   setup_repository
   setup_ruby
   setup_nodejs
+  setup_bazel
   setup_python
+  setup_terraform
 
   echo "-----------"
   echo -e "${COLOR_BLUE}asdf setup finished.${COLOR_NC}"
