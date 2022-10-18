@@ -8,6 +8,7 @@ alias mkdir='mkdir -p'
 # enable aliases for `sudo`
 alias sudo='sudo '
 
+# set wrapper commands
 [ -x "`which htop`" ] && alias top=htop
 [ -x "`which hub`" ] && alias git=hub
 [ -x "`which exa`" ] && alias ls=exa
@@ -39,7 +40,7 @@ fi
 
 # char aliases
 # alias a=
-alias b=bundle
+alias b=bazel
 alias c=cat
 alias d=dotnet
 alias e=emacs
