@@ -80,5 +80,5 @@ if [ -x "`which fzf`" ]; then
 fi
 
 charalias() {
-    alias | grep 'alias .=' | sed "s/['|\']//g" | sed "s/^alias //g" | sed "s/=/: /"| sort
+    alias | grep '^.=[a-zA-Z]' | sed "s/['|\']//g" | sed "s/^alias //g" | sed "s/=/: /"| sort
 }
