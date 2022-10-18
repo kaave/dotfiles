@@ -8,9 +8,9 @@ COLOR_NC='\033[0m' # No Color
 
 links=(
     # shell
-    ".bash"
-    ".bashrc"
-    ".bash_profile"
+    # ".bash"
+    # ".bashrc"
+    # ".bash_profile"
     ".zsh"
     ".zshrc"
     ".zshenv"
@@ -32,7 +32,7 @@ links=(
     ".vim"
     ".vimrc"
     ".gvimrc"
-    ".ideavimrc"
+    # ".ideavimrc"
 
     # emacs
     ".emacs.d"
