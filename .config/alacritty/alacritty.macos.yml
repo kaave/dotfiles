@@ -50,5 +50,5 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  use_thin_strokes: false
+  AppleFontSmoothing: false
 
