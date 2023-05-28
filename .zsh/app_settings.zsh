@@ -36,6 +36,8 @@ if [ -x "`which python`" ]; then
   alias pysv='python -m http.server'
 fi
 
+[ -e ~/.rye/env ] && source "$HOME/.rye/env"
+
 if [ -x "`which pipenv`" ]; then
     PIPENV_VENV_IN_PROJECT=1
     alias pe='pipenv'
@@ -61,6 +63,11 @@ if [ -x "`which bundle`" ]; then
     alias bi='bundle install'
     alias binit='bundle install --path=vendor/bundle -j4'
     balias() { alias | grep 'bundle' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
+fi
+
+# Go
+if [ -e $HOME/go ]; then
+    export PATH=$PATH:$HOME/go/bin
 fi
 
 # haskell
