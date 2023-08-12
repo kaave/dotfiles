@@ -6,6 +6,9 @@ COLOR_RED='\033[0;31m'
 COLOR_BLUE='\033[0;36m'
 COLOR_NC='\033[0m' # No Color
 
+this_file_path="readlink -f \"${BASH_SOURCE:-$0}\""
+DIR_PATH=$(dirname "$this_file_path")
+
 links=(
     # shell
     # ".bash"
@@ -96,7 +99,7 @@ main() {
   fi
 
   for link in "${links[@]}"; do
-    create_symlink "$HOME/dotfiles/$link" "$HOME/$link"
+    create_symlink "$DIR_PATH/dotfiles/$link" "$HOME/$link"
   done
 
   if [ ! -d "$HOME/.config" ]; then
@@ -105,7 +108,7 @@ main() {
   fi
 
   for link in "${config_links[@]}"; do
-    create_symlink "$HOME/dotfiles/.config/$link" "$HOME/.config/$link"
+    create_symlink "$DIR_PATH/dotfiles/.config/$link" "$HOME/.config/$link"
   done
 
   if [ ! -d "$tpm_path" ]; then
