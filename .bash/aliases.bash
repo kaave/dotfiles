@@ -11,7 +11,7 @@ alias sudo='sudo '
 # wrap improve tools
 if type htop >/dev/null 2>&1; then alias top=htop; fi
 if type hub >/dev/null 2>&1;  then alias git=hub; fi
-if type exa >/dev/null 2>&1;  then alias ls=exa; fi
+if type lsd >/dev/null 2>&1;  then alias ls=lsd; fi
 if type bat >/dev/null 2>&1;  then alias cat=bat; fi
 
 if type code >/dev/null 2>&1; then alias cr='code . -r'; fi

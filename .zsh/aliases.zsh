@@ -11,7 +11,7 @@ alias sudo='sudo '
 # set wrapper commands
 [ -x "`which htop`" ] && alias top=htop
 [ -x "`which hub`" ] && alias git=hub
-[ -x "`which exa`" ] && alias ls=exa
+[ -x "`which lsd`" ] && alias ls=lsd
 [ -x "`which bat`" ] && alias cat=bat
 
 #

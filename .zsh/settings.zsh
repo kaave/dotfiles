@@ -14,8 +14,8 @@ setopt interactive_comments
 setopt auto_cd
 # cdしたら勝手にls -lする
 function chpwd() {
-    if [ -x "`which exa`" ]; then
-        exa -l
+    if [ -x "`which lsd`" ]; then
+        lsd -l
     else
         ls -l
     fi

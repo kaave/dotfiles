@@ -9,8 +9,8 @@ if type -q hub
     alias git hub
 end
 
-if type -q exa
-    alias ls exa
+if type -q lsd
+    alias ls lsd
 else
     set -x CLICOLOR 1
     set -x LSCOLORS gxfxcxdxbxegedabagacad
