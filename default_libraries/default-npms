@@ -4,6 +4,11 @@ pnpm
 bash-language-server
 neovim
 textlint
-textlint-rule-spellcheck-tech-word
-textlint-rule-no-mix-dearu-desumasu
+textlint-rule-preset-ja-technical-writing
+textlint-rule-preset-jtf-style
 textlint-rule-prh
+# ==start== deps on 'textlint-rule-preset-ja-technical-writing'
+textlint-filter-rule-comments
+textlint-filter-rule-allowlist
+# ==end==
+
