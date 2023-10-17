@@ -82,3 +82,12 @@ fi
 charalias() {
     alias | grep '^.=[a-zA-Z]' | sed "s/['|\']//g" | sed "s/^alias //g" | sed "s/=/: /"| sort
 }
+
+uuidgen7() {
+    local timestamp uuidv4 source
+    # Fake milli seconds
+    timestamp=`printf '%012x\n' $(date +%s000)`
+    uuidv4=`uuidgen | sed 's/-//g'`
+    source=`echo "$timestamp$uuidv4" | tr 'A-Z' 'a-z'`
+    echo "${source:0:8}-${source:8:4}-7${source:12:3}-${source:15:4}-${source:19:12}"
+}
