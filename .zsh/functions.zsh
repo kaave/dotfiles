@@ -85,9 +85,16 @@ charalias() {
 
 uuidgen7() {
     local timestamp uuidv4 source
-    # Fake milli seconds
-    timestamp=`printf '%012x\n' $(date +%s000)`
-    uuidv4=`uuidgen | sed 's/-//g'`
-    source=`echo "$timestamp$uuidv4" | tr 'A-Z' 'a-z'`
-    echo "${source:0:8}-${source:8:4}-7${source:12:3}-${source:15:4}-${source:19:12}"
+
+    timestamp=`printf '%012x\n' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")`
+    value1=`printf '%03x\n' $(shuf -i 0-$((0xfff)) -n 1)`
+    value2=`printf '%04x\n' $(shuf -i 0-$((0xffff)) -n 1)`
+    value3=`printf '%012x\n' $(shuf -i 0-$((0xffffffffffff)) -n 1)`
+    return_value="${timestamp:0:8}-${timestamp:8:4}-7$value1-$value2-$value3"
+
+    if [ "$1" = "-U" ]; then
+        echo $return_value | tr 'a-f' 'A-F'
+    else
+        echo $return_value
+    fi
 }
