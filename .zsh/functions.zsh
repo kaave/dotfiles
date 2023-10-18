@@ -84,7 +84,7 @@ charalias() {
 }
 
 uuidgen7() {
-    local timestamp uuidv4 source
+    local timestamp value1 value2 value3 return_value
 
     timestamp=`printf '%012x\n' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")`
     value1=`printf '%03x\n' $(shuf -i 0-$((0xfff)) -n 1)`
