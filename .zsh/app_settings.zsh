@@ -72,12 +72,12 @@ fi
 
 # haskell
 [ -f "/Users/kaave/.ghcup/env" ] && source "/Users/kaave/.ghcup/env" # ghcup-env
-if [ -x "`which stack`" ]; then
-    alias ghc='stack ghc --'
-    alias ghci='stack ghci --'
-    alias runghc='stack runghc --'
-    alias runhaskell='stack runhaskell --'
-fi
+# if [ -x "`which stack`" ]; then
+#     alias ghc='stack ghc --'
+#     alias ghci='stack ghci --'
+#     alias runghc='stack runghc --'
+#     alias runhaskell='stack runhaskell --'
+# fi
 
 # rustup
 [ -e ~/.cargo/bin ] && export PATH="$HOME/.cargo/bin:$PATH"
