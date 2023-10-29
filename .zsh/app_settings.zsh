@@ -71,6 +71,7 @@ if [ -e $HOME/go ]; then
 fi
 
 # haskell
+[ -f "/Users/kaave/.ghcup/env" ] && source "/Users/kaave/.ghcup/env" # ghcup-env
 if [ -x "`which stack`" ]; then
     alias ghc='stack ghc --'
     alias ghci='stack ghci --'
