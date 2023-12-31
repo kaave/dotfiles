@@ -52,7 +52,7 @@ alias g=git
 # alias k
 # alias l
 alias m=make
-alias n=node
+alias n=npm
 alias o=open
 alias p=pnpm
 # alias q
