@@ -43,10 +43,10 @@ source ~/.zsh/app_settings.zsh
 
 case ${OSTYPE} in
     darwin*)
-        source ~/.zsh/mac.zsh
+        source ~/.zsh/os/mac.zsh
         ;;
     linux*)
-        source ~/.zsh/linux.zsh
+        source ~/.zsh/os/linux.zsh
         ;;
 esac
 
