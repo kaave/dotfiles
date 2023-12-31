@@ -1,30 +1,31 @@
 if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ "$WSL_DISTRO_NAME" = "Ubuntu" ] && [ "$TERM_PROGRAM" = "" ]); then
     # run tmux on startup
-    if [ -x "`which tmux`" ]; then
-        if [[ ! -n $TMUX && $- == *l* ]]; then
-            ID="`tmux list-sessions`"
-            if [ -z "$ID" ]; then
-                tmux -u new-session
-                return
-            else
-                new_session="Start New Session"
-                IDs="$ID"
-                IDs+="\n$new_session:"
-                choosed_session=$(echo -e "$IDs" | fzf | cut -d: -f1)
-                if [ "$choosed_session" = "${new_session}" ]; then
-                    tmux -u new-session
-                    return
-                elif [ -n "$choosed_session" ]; then
-                    tmux -u attach-session -t "$choosed_session"
-                    return
-                else
-                    : # Start terminal normally
-                fi
-            fi
+    if [ -x "$(which tmux)" ] && [[ -z $TMUX && $- == *l* ]]; then
+        ID="$(tmux list-sessions)"
+        if [ -z "$ID" ]; then
+            tmux -u new-session
+            return
         fi
+
+        new_session="Start New Session"
+        IDs="$ID"
+        IDs+="\n$new_session:"
+        choosed_session=$(echo -e "$IDs" | fzf | cut -d: -f1)
+
+        if [ "$choosed_session" = "${new_session}" ]; then
+            tmux -u new-session
+            return
+        fi
+
+        if [ -n "$choosed_session" ]; then
+            tmux -u attach-session -t "$choosed_session"
+            return
+        fi
+
+        : # Start terminal normally
     fi
 
-    if [ $(uname) = "Linux" ]; then
+    if [ "$(uname)" = "Linux" ]; then
         # set key repeat
         xset r rate 200 40
     fi
