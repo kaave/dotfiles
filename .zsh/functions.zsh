@@ -18,14 +18,6 @@ if [ -x "`which ffmpeg`" ]; then
             $(echo $1 | sed -E 's/\.mov$/.gif/')
     }
 
-    githubfy() {
-        ffmpeg \
-            -i $1 \
-            -vf scale=640:-1 \
-            -r 10 \
-            $(echo $1 | sed -E 's/\.mov$/.gif/')
-    }
-
     mp4fy() {
         ffmpeg \
             -i $1 \

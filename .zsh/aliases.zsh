@@ -47,7 +47,7 @@ alias e=emacs
 # alias f
 alias g=git
 # alias h
-# alias i
+alias i=ip-info
 # alias j
 # alias k
 # alias l
@@ -59,9 +59,9 @@ alias p=pnpm
 # alias r
 alias s=stack
 alias t=terraform
-# alias u
+alias u=uname
 # alias v
-# alias w
+alias w=whoami
 # alias x
 alias y=yarn
 # alias z
