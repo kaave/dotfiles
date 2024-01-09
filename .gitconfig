@@ -40,6 +40,7 @@
     ri = rebase -i
     s = status
     sw = switch
+    swm="!git switch $(git symbolic-ref refs/remotes/origin/HEAD | cut -f4 -d'/')"
     cm = commit -m
     ca = commit --amend
     p = push
