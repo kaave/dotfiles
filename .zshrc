@@ -31,7 +31,7 @@ if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ 
     fi
 fi
 
-source ~/.zsh/zplug.zsh
+source ~/.zsh/plugins.zsh
 source ~/.zsh/global.zsh
 source ~/.zsh/compinit.zsh
 source ~/.zsh/settings.zsh
