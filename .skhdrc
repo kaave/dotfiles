@@ -26,7 +26,7 @@ ctrl + shift - d : skhd -t $(date +"%Y-%m-%d")
 ## time
 ctrl + shift - t : skhd -t $(date +"%H:%M")
 ## uuid
-ctrl + shift - u : skhd -t $(uuidgen)
+ctrl + shift - u : skhd -t $(uuidgen | tr '[A-Z]' '[a-z]')
 
 ## PR banners
 cmd + ctrl + shift - m : skhd -t "![must](https://img.shields.io/badge/%5B%F0%9F%96%8D%EF%B8%8F_MUST%5D-c53d43)"
