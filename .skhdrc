@@ -26,8 +26,10 @@ ctrl + shift - d : skhd -t $(date +"%Y-%m-%d")
 ## time
 ctrl + shift - t : skhd -t $(date +"%H:%M")
 ## uuid
-ctrl + shift - u : skhd -t $(local t=$(printf '%012x' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")); local v1=$(printf '%03x' $(shuf -i 0-4095 -n 1)); local v2=$(printf '%04x' $(shuf -i 0-65535 -n 1)); local v3=$(printf '%012x' $(shuf -i 0-1152921504606846975 -n 1)); echo "${t:0:8}-${t:8:4}-7$v1-$v2-$v3")
-ctrl + shift + alt - u : skhd -t $(local t=$(printf '%012x' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")); local v1=$(printf '%03x' $(shuf -i 0-4095 -n 1)); local v2=$(printf '%04x' $(shuf -i 0-65535 -n 1)); local v3=$(printf '%012x' $(shuf -i 0-1152921504606846975 -n 1)); local r="${t:0:8}-${t:8:4}-7$v1-$v2-$v3"; echo $r | tr 'a-f' 'A-F')
+ctrl + shift - u : skhd -t $(uuidgen7)
+ctrl + shift + alt - u : skhd -t $(uuidgen7 -U)
+## hex
+ctrl + shift - h : skhd -t $(printf '#%06x\n' $(shuf -i 0-$((0xffffff)) -n 1))
 
 ## PR banners
 cmd + ctrl + shift - m : skhd -t "![must](https://img.shields.io/badge/%5B%F0%9F%96%8D%EF%B8%8F_MUST%5D-c53d43)"
