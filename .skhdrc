@@ -1,0 +1,35 @@
+# Launchs apps.
+ctrl - 1 : open /Applications/Arc.app
+ctrl - 2 : open /Applications/Slack.app
+ctrl - 3 : open /Applications/Sidekick.app
+ctrl - 4 : open /Applications/Spark.app
+ctrl - 5 : open /Applications/Books.app
+ctrl - 6 : open /Applications/Figma.app
+ctrl - 7 : open /Applications/Bitwarden.app
+ctrl - 8 : open /Applications/Obsidian.app
+ctrl - 9 : open '/Applications/Visual Studio Code.app'
+ctrl - 0 : open /Applications/Alacritty.app
+ctrl + shift - 1 : open '/Applications/Firefox Developer Edition.app'
+# ctrl + shift - 2 : open /Applications/Slack.app
+# ctrl + shift - 3 : open /Applications/Sidekick.app
+# ctrl + shift - 4 : open /Applications/Spark.app
+ctrl + shift - 5 : open /Applications/Kindle.app
+ctrl + shift - 6 : open /Applications/DeepL.app
+ctrl + shift - 7 : open '/Applications/Authy Desktop.app'
+ctrl + shift - 8 : open /Applications/CotEditor.app
+ctrl + shift - 9 : open '/Applications/Visual Studio Code - Insiders.app'
+ctrl + shift - 0 : open -a /System/Library/CoreServices/Finder.app
+
+# Create texts
+## date
+ctrl + shift - d : skhd -t $(date +"%Y-%m-%d")
+## time
+ctrl + shift - t : skhd -t $(date +"%H:%M")
+## uuid
+ctrl + shift - u : skhd -t $(uuidgen)
+
+## PR banners
+cmd + ctrl + shift - m : skhd -t "![must](https://img.shields.io/badge/%5B%F0%9F%96%8D%EF%B8%8F_MUST%5D-c53d43)"
+cmd + ctrl + shift - q : skhd -t "![q](https://img.shields.io/badge/%5B%F0%9F%99%8B_Q%5D-fcc800)"
+cmd + ctrl + shift - t : skhd -t "![Tweet](https://img.shields.io/badge/%5B%F0%9F%90%A4_Tweet%5D-1DA1F2)"
+

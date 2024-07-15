@@ -57,7 +57,11 @@ config_links=(
 tpm_path="$HOME/.tmux/plugins/tpm"
 
 setup_macos() {
-  links=("${links[@]}" ".xvimrc")
+  links=(
+    "${links[@]}"
+    ".xvimrc"
+    ".skhdrc"
+  )
   config_links=("${config_links[@]}" "karabiner")
 }
 
