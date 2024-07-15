@@ -5,7 +5,7 @@ if [ -x "`which ffmpeg`" ]; then
         ffmpeg \
             -i $1 \
             -r 10 \
-            $(echo $1 | sed -E 's/\.mov$/.gif/')
+            $(echo $1 | sed -E 's/\.[a-zA-Z0-9]*$/.gif/')
     }
 
     mp4fy() {
