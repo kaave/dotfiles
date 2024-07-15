@@ -33,3 +33,18 @@ cmd + ctrl + shift - m : skhd -t "![must](https://img.shields.io/badge/%5B%F0%9F
 cmd + ctrl + shift - q : skhd -t "![q](https://img.shields.io/badge/%5B%F0%9F%99%8B_Q%5D-fcc800)"
 cmd + ctrl + shift - t : skhd -t "![Tweet](https://img.shields.io/badge/%5B%F0%9F%90%A4_Tweet%5D-1DA1F2)"
 
+# Window manager
+## to Left
+cmd + ctrl + shift - h : yabai -m window --grid 1:14:0:0:4:1
+## to Center
+cmd + ctrl + shift - c : yabai -m window --grid 1:14:4:0:6:1
+## to Right
+cmd + ctrl + shift - l : yabai -m window --grid 1:14:10:0:4:1
+## to Left: large
+cmd + ctrl + shift - j : yabai -m window --grid 1:14:0:0:10:1
+## to Right: large
+cmd + ctrl + shift - k : yabai -m window --grid 1:14:4:0:10:1
+
+# Zen mode
+cmd + ctrl + shift - z : shortcuts run "Zen: on"
+cmd + ctrl + shift + alt - z : shortcuts run "Zen: off"
