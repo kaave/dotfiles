@@ -44,6 +44,8 @@ cmd + ctrl + shift - l : yabai -m window --grid 1:14:10:0:4:1
 cmd + ctrl + shift - j : yabai -m window --grid 1:14:0:0:10:1
 ## to Right: large
 cmd + ctrl + shift - k : yabai -m window --grid 1:14:4:0:10:1
+## Fullscreen
+cmd + ctrl + shift - space : yabai -m window --grid 1:1:0:0:1:1
 
 # Zen mode
 cmd + ctrl + shift - z : shortcuts run "Zen: on"
