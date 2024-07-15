@@ -25,6 +25,7 @@
 [push]
     # カレントのブランチと同名のリモートブランチがあったらpush
     default = current
+
 [alias]
     aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
     co = checkout
@@ -38,19 +39,18 @@
     fu = fetch upstream
     r = rebase
     ri = rebase -i
+    # print remote url
+    ru = !git remote get-url origin | sed 's/\\.git$//' | sed 's/git@github\\.com:/https:\\/\\/github\\.com\\//'
     s = status
     sw = switch
-    swm="!git switch $(git symbolic-ref refs/remotes/origin/HEAD | cut -f4 -d'/')"
+    swm = "!git switch $(git symbolic-ref refs/remotes/origin/HEAD | cut -f4 -d'/')"
     cm = commit -m
     ca = commit --amend
     p = push
     po = push origin
-    pom = push origin master
-    pos = push origin --set-upstream
     pwb = ! git branch | grep -e '^\\* ' | sed -e 's/^\\* //g'
     erase = !git reset --hard && git clean -fd
     d = diff
-    dw = diff --word-diff-regex=$'[^\\x80-\\xbf][\\x80-\\xbf]*' --word-diff=color
     # tig風のグラフを出力
     graph = log --graph --date=iso --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
     # 今日一日の作業
@@ -58,8 +58,6 @@
     today-code = "log --stat --since='12 hour ago' --pretty=format:'#--------------------------------------------------------%ncommit %C(green bold)%H%n%CresetAuthor: %C(yellow bold)%an %x3c%ae%x3e%n%CresetDate:    %aD%n%n%C(cyan bold)    %s%n%n%Creset%w(0,4,4)%b'"
     # すっきりしたgit log
     ls = log --decorate --oneline --stat --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
-    # コミットランキング
-    rank = shortlog -s -n --no-merges
     # vimdiff使う
     vdiff = difftool
     # GitHubのブランチを一括同期
@@ -92,7 +90,5 @@
 [mergetool "sourcetree"]
     cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
     trustExitCode = true
-[commit]
-    template = /Users/kyosuke.abe/.stCommitMsg
 [init]
     defaultBranch = main
