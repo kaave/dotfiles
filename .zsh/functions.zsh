@@ -1,14 +1,4 @@
-# get .gitignore template.
-#
-# example:
-#   gi osx,windows,linux,node
-gi() {
-    curl -L -s https://www.gitignore.io/api/$@ ;
-}
-
-ip-info() {
-    curl -L -s https://checkip.amazonaws.com/
-}
+# Load from .zshrc
 
 if [ -x "`which ffmpeg`" ]; then
     giffy() {
@@ -71,22 +61,37 @@ if [ -x "`which fzf`" ]; then
     }
 fi
 
-charalias() {
-    alias | grep '^.=[a-zA-Z]' | sed "s/['|\']//g" | sed "s/^alias //g" | sed "s/=/: /"| sort
-}
+autorun_tmux() {
+    if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ "$WSL_DISTRO_NAME" = "Ubuntu" ] && [ "$TERM_PROGRAM" = "" ]); then
+        # run tmux on startup
+        if [ -x "$(which tmux)" ] && [[ -z $TMUX && $- == *l* ]]; then
+            ID="$(tmux list-sessions)"
+            if [ -z "$ID" ]; then
+                tmux -u new-session
+                return
+            fi
 
-uuidgen7() {
-    local timestamp value1 value2 value3 return_value
+            new_session="Start New Session"
+            IDs="$ID"
+            IDs+="\n$new_session:"
+            choosed_session=$(echo -e "$IDs" | fzf | cut -d: -f1)
 
-    timestamp=`printf '%012x\n' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")`
-    value1=`printf '%03x\n' $(shuf -i 0-$((0xfff)) -n 1)`
-    value2=`printf '%04x\n' $(shuf -i 0-$((0xffff)) -n 1)`
-    value3=`printf '%012x\n' $(shuf -i 0-$((0xffffffffffff)) -n 1)`
-    return_value="${timestamp:0:8}-${timestamp:8:4}-7$value1-$value2-$value3"
+            if [ "$choosed_session" = "${new_session}" ]; then
+                tmux -u new-session
+                return
+            fi
 
-    if [ "$1" = "-U" ]; then
-        echo $return_value | tr 'a-f' 'A-F'
-    else
-        echo $return_value
+            if [ -n "$choosed_session" ]; then
+                tmux -u attach-session -t "$choosed_session"
+                return
+            fi
+
+            : # Start terminal normally
+        fi
+
+        if [ "$(uname)" = "Linux" ]; then
+            # set key repeat
+            xset r rate 200 40
+        fi
     fi
 }

@@ -1,7 +1,7 @@
 # Launchs apps.
-ctrl - 1 : open /Applications/Arc.app
+ctrl - 1 : open "/Applications/$(default_browser).app"
 ctrl - 2 : open /Applications/Slack.app
-ctrl - 3 : open "/Applications/Google Chrome.app"
+ctrl - 3 : open /Applications/Arc.app
 ctrl - 4 : open /Applications/Spark.app
 ctrl - 5 : open /Applications/Books.app
 ctrl - 6 : open /Applications/Figma.app
@@ -26,7 +26,8 @@ ctrl + shift - d : skhd -t $(date +"%Y-%m-%d")
 ## time
 ctrl + shift - t : skhd -t $(date +"%H:%M")
 ## uuid
-ctrl + shift - u : skhd -t $(uuidgen | tr '[A-Z]' '[a-z]')
+ctrl + shift - u : skhd -t $(local t=$(printf '%012x' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")); local v1=$(printf '%03x' $(shuf -i 0-4095 -n 1)); local v2=$(printf '%04x' $(shuf -i 0-65535 -n 1)); local v3=$(printf '%012x' $(shuf -i 0-1152921504606846975 -n 1)); echo "${t:0:8}-${t:8:4}-7$v1-$v2-$v3")
+ctrl + shift + alt - u : skhd -t $(local t=$(printf '%012x' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")); local v1=$(printf '%03x' $(shuf -i 0-4095 -n 1)); local v2=$(printf '%04x' $(shuf -i 0-65535 -n 1)); local v3=$(printf '%012x' $(shuf -i 0-1152921504606846975 -n 1)); local r="${t:0:8}-${t:8:4}-7$v1-$v2-$v3"; echo $r | tr 'a-f' 'A-F')
 
 ## PR banners
 cmd + ctrl + shift - m : skhd -t "![must](https://img.shields.io/badge/%5B%F0%9F%96%8D%EF%B8%8F_MUST%5D-c53d43)"
