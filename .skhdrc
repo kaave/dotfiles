@@ -1,7 +1,7 @@
 # Launchs apps.
 ctrl - 1 : open /Applications/Arc.app
 ctrl - 2 : open /Applications/Slack.app
-ctrl - 3 : open /Applications/Sidekick.app
+ctrl - 3 : open "/Applications/Google Chrome.app"
 ctrl - 4 : open /Applications/Spark.app
 ctrl - 5 : open /Applications/Books.app
 ctrl - 6 : open /Applications/Figma.app
