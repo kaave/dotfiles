@@ -1,5 +1,5 @@
 # Launchs apps.
-ctrl - 1 : open "/Applications/$(default_browser).app"
+ctrl - 1 : open "/Applications/$(default_browser | perl -pe 's/%20/ /g').app"
 ctrl - 2 : open /Applications/Slack.app
 ctrl - 3 : open /Applications/Arc.app
 ctrl - 4 : open /Applications/Spark.app

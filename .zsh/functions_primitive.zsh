@@ -48,5 +48,7 @@ default_browser() {
                     stringByDeletingPathExtension() as text
     return appname as text
 AS
+
     return
+    cat $osascript | perl -pe 's/%20/ /g'
 }
