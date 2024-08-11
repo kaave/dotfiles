@@ -1,0 +1,22 @@
+[font]
+size = 18.0
+
+[font.bold]
+family = "UDEV Gothic 35NF"
+style = "Bold"
+
+[font.glyph_offset]
+x = 0
+y = 4
+
+[font.italic]
+family = "UDEV Gothic 35NF"
+style = "Italic"
+
+[font.normal]
+family = "UDEV Gothic 35NF"
+style = "Regular"
+
+[font.offset]
+x = 1
+y = 6
