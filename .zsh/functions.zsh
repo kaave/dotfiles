@@ -72,12 +72,13 @@ autorun_tmux() {
     if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ "$WSL_DISTRO_NAME" = "Ubuntu" ] && [ "$TERM_PROGRAM" = "" ]); then
         # run tmux on startup
         if [ -x "$(which tmux)" ] && [[ -z $TMUX && $- == *l* ]]; then
-            ID="$(tmux list-sessions)"
-            if [ -z "$ID" ]; then
+            tmux list-sessions > /dev/null 2>&1
+            if [ $? -ne 0 ]; then
                 tmux -u new-session
                 return
             fi
 
+            ID="$(tmux list-sessions)"
             new_session="Start New Session"
             IDs="$ID"
             IDs+="\n$new_session:"
