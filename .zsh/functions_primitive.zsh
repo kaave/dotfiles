@@ -13,13 +13,14 @@ ip-info() {
 }
 
 uuidgen7() {
-    local timestamp value1 value2 value3 return_value
+    local timestamp value1 value2 value3 value_bit return_value
 
     timestamp=`printf '%012x\n' $(perl -MTime::HiRes=time -e 'printf "%.3f\n", time' | sed "s/\.//g")`
     value1=`printf '%03x\n' $(shuf -i 0-$((0xfff)) -n 1)`
-    value2=`printf '%04x\n' $(shuf -i 0-$((0xffff)) -n 1)`
+    value2=`printf '%03x\n' $(shuf -i 0-$((0xfff)) -n 1)`
     value3=`printf '%012x\n' $(shuf -i 0-$((0xffffffffffff)) -n 1)`
-    return_value="${timestamp:0:8}-${timestamp:8:4}-7$value1-$value2-$value3"
+    value_bit=`printf '%x\n' $(shuf -i 8-$((0xb)) -n 1)`
+    return_value="${timestamp:0:8}-${timestamp:8:4}-7$value1-$value_bit$value2-$value3"
 
     if [ "$1" = "-U" ]; then
         echo $return_value | tr 'a-f' 'A-F'
