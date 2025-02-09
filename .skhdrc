@@ -16,7 +16,7 @@ ctrl + shift - 1 : open '/Applications/Firefox Developer Edition.app'
 ctrl + shift - 5 : open /Applications/Kindle.app
 ctrl + shift - 6 : open /Applications/DeepL.app
 ctrl + shift - 7 : open '/Applications/Authy Desktop.app'
-ctrl + shift - 8 : open /Applications/CotEditor.app
+ctrl + shift - 8 : open /Applications/Notion.app
 ctrl + shift - 9 : open '/Applications/Visual Studio Code - Insiders.app'
 ctrl + shift - 0 : open -a /System/Library/CoreServices/Finder.app
 
