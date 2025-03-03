@@ -11,16 +11,15 @@ SetKeyDelay(0)
 ; Launcher
 ; -----------------------------------------
 
->^1:: ;brave
+>^1:: ;arc
 { ; V1toV2: Added bracket
 global ; V1toV2: Made function global
-  ErrorLevel := ProcessExist("brave.exe")
-  SetWorkingDir("C:\Users\voriv\scoop\apps\brave\current")
+  ErrorLevel := ProcessExist("Arc.exe")
   if (ErrorLevel != 0)
     WinActivate("ahk_pid " ErrorLevel)
   Else
-    ; SetWorkingDir("C:\Users\voriv\scoop\apps\brave\current")
-    Run("C:\Users\voriv\scoop\apps\brave\current\brave.exe --user-data-dir=`"C:\Users\voriv\scoop\apps\brave\current\User` Data`"")
+    ; Run("C:\Users\voriv\scoop\apps\vivaldi\current\Application\vivaldi.exe")
+    Run("C:\Users\voriv\AppData\Local\Microsoft\WindowsApps\Arc.exe")
   Return
 } ; V1toV2: Added Bracket before hotkey or Hotstring
 
