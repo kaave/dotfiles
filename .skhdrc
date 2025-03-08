@@ -3,7 +3,7 @@ ctrl - 1 : open "/Applications/$(default_browser | perl -pe 's/%20/ /g').app"
 ctrl - 2 : open /Applications/Slack.app
 ctrl - 3 : open /Applications/Arc.app
 ctrl - 4 : open /Applications/Spark.app
-ctrl - 5 : open /Applications/Books.app
+ctrl - 5 : open /System/Applications/Books.app
 ctrl - 6 : open /Applications/Figma.app
 ctrl - 7 : open /Applications/Bitwarden.app
 ctrl - 8 : open /Applications/Obsidian.app
