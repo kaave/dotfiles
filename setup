@@ -1,4 +1,18 @@
 #!/usr/bin/env bash
+#
+# Dotfiles Setup Script with Parallel Processing
+#
+# Usage:
+#   ./setup                    # Normal setup with parallel processing
+#   ./setup --rollback        # Rollback changes from the last run
+#
+# Environment Variables:
+#   DOTFILES_PARALLEL_JOBS    # Number of parallel jobs (default: 4)
+#
+# Examples:
+#   DOTFILES_PARALLEL_JOBS=8 ./setup    # Use 8 parallel jobs
+#   ./setup --rollback                   # Rollback the last changes
+#
 
 # Exit on any error, undefined variables, and pipe failures
 set -euo pipefail
@@ -14,10 +28,15 @@ readonly COLOR_NC='\033[0m' # No Color
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 
-# Global counters
-declare -i SUCCESS_COUNT=0
-declare -i FAILURE_COUNT=0
-declare -i BACKUP_COUNT=0
+# Global counters (use temporary files for parallel processing)
+readonly COUNTER_DIR="/tmp/dotfiles_setup_$$"
+readonly SUCCESS_COUNTER="$COUNTER_DIR/success"
+readonly FAILURE_COUNTER="$COUNTER_DIR/failure"
+readonly BACKUP_COUNTER="$COUNTER_DIR/backup"
+readonly LOCK_FILE="$COUNTER_DIR/lock"
+
+# Maximum number of parallel jobs
+readonly MAX_JOBS=${DOTFILES_PARALLEL_JOBS:-4}
 
 # Basic links
 readonly BASIC_LINKS=(
@@ -86,6 +105,75 @@ readonly LINUX_CONFIG_LINKS=(
     "fontconfig"
 )
 
+# Counter management functions
+init_counters() {
+    mkdir -p "$COUNTER_DIR"
+    echo "0" > "$SUCCESS_COUNTER"
+    echo "0" > "$FAILURE_COUNTER"
+    echo "0" > "$BACKUP_COUNTER"
+}
+
+cleanup_counters() {
+    [[ -d "$COUNTER_DIR" ]] && rm -rf "$COUNTER_DIR"
+}
+
+increment_counter() {
+    local counter_file="$1"
+    local lockfile="$counter_file.lock"
+    
+    # Simple file-based locking
+    while ! mkdir "$lockfile" 2>/dev/null; do
+        sleep 0.01
+    done
+    
+    local count
+    count=$(<"$counter_file")
+    echo $((count + 1)) > "$counter_file"
+    
+    rmdir "$lockfile"
+}
+
+get_counter() {
+    local counter_file="$1"
+    [[ -f "$counter_file" ]] && cat "$counter_file" || echo "0"
+}
+
+# Parallel processing function
+run_parallel() {
+    local -a items=("$@")
+    local -a pids=()
+    local job_count=0
+    
+    for item in "${items[@]}"; do
+        # Wait if we've hit the job limit
+        while [[ $job_count -ge $MAX_JOBS ]]; do
+            # Check for completed jobs
+            local new_pids=()
+            for pid in "${pids[@]}"; do
+                if kill -0 "$pid" 2>/dev/null; then
+                    new_pids+=("$pid")
+                else
+                    ((job_count--))
+                fi
+            done
+            pids=("${new_pids[@]}")
+            
+            # Short sleep if we're still at capacity
+            [[ $job_count -ge $MAX_JOBS ]] && sleep 0.1
+        done
+        
+        # Start new job
+        "$item" &
+        pids+=($!)
+        ((job_count++))
+    done
+    
+    # Wait for all remaining jobs to complete
+    for pid in "${pids[@]}"; do
+        wait "$pid"
+    done
+}
+
 # Logging functions
 log_info() {
     echo -e "${COLOR_BLUE}[INFO]${COLOR_NC} $1"
@@ -93,7 +181,7 @@ log_info() {
 
 log_success() {
     echo -e "${COLOR_GREEN}[SUCCESS]${COLOR_NC} $1"
-    ((SUCCESS_COUNT++))
+    increment_counter "$SUCCESS_COUNTER"
 }
 
 log_warning() {
@@ -102,7 +190,7 @@ log_warning() {
 
 log_error() {
     echo -e "${COLOR_RED}[ERROR]${COLOR_NC} $1" >&2
-    ((FAILURE_COUNT++))
+    increment_counter "$FAILURE_COUNTER"
 }
 
 # Backup existing file/link
@@ -119,7 +207,7 @@ backup_existing() {
         local backup_path="$BACKUP_DIR/$(basename "$target")"
         if mv "$target" "$backup_path" 2>/dev/null; then
             log_warning "Backed up existing: $target → $backup_path"
-            ((BACKUP_COUNT++))
+            increment_counter "$BACKUP_COUNTER"
             return 0
         else
             log_error "Failed to backup: $target"
@@ -165,6 +253,52 @@ create_symlink() {
         log_error "Failed to create symlink: $target → $source"
         return 1
     fi
+}
+
+# Worker function for parallel symlink creation
+create_symlink_worker() {
+    local source="$1"
+    local target="$2"
+    create_symlink "$source" "$target"
+}
+
+# Generate job functions for parallel execution
+generate_symlink_jobs() {
+    local -a links=("$@")
+    local -a jobs=()
+    
+    for link in "${links[@]}"; do
+        local source="$SCRIPT_DIR/$link"
+        local target="$HOME/$link"
+        
+        if [[ -e "$source" ]]; then
+            # Create a unique function name for this job
+            local job_func="job_$(echo "$link" | tr '/./' '___')"
+            eval "$job_func() { create_symlink_worker '$source' '$target'; }"
+            jobs+=("$job_func")
+        fi
+    done
+    
+    printf '%s\n' "${jobs[@]}"
+}
+
+generate_config_symlink_jobs() {
+    local -a links=("$@")
+    local -a jobs=()
+    
+    for link in "${links[@]}"; do
+        local source="$SCRIPT_DIR/.config/$link"
+        local target="$HOME/.config/$link"
+        
+        if [[ -e "$source" ]]; then
+            # Create a unique function name for this job
+            local job_func="config_job_$(echo "$link" | tr '/./' '___')"
+            eval "$job_func() { create_symlink_worker '$source' '$target'; }"
+            jobs+=("$job_func")
+        fi
+    done
+    
+    printf '%s\n' "${jobs[@]}"
 }
 
 # Setup tmux plugin manager
@@ -252,21 +386,27 @@ check_dependencies() {
 
 # Print summary
 print_summary() {
+    local success_count failure_count backup_count
+    success_count=$(get_counter "$SUCCESS_COUNTER")
+    failure_count=$(get_counter "$FAILURE_COUNTER")
+    backup_count=$(get_counter "$BACKUP_COUNTER")
+    
     echo
     echo "============================================"
     log_info "Setup Summary:"
-    echo "  ✅ Successful operations: $SUCCESS_COUNT"
-    if [[ $FAILURE_COUNT -gt 0 ]]; then
-        echo "  ❌ Failed operations: $FAILURE_COUNT"
+    echo "  ✅ Successful operations: $success_count"
+    if [[ $failure_count -gt 0 ]]; then
+        echo "  ❌ Failed operations: $failure_count"
     fi
-    if [[ $BACKUP_COUNT -gt 0 ]]; then
-        echo "  📦 Files backed up: $BACKUP_COUNT"
+    if [[ $backup_count -gt 0 ]]; then
+        echo "  📦 Files backed up: $backup_count"
         echo "  📁 Backup location: $BACKUP_DIR"
     fi
+    echo "  ⚡ Parallel jobs: $MAX_JOBS"
     echo "============================================"
     
-    if [[ $FAILURE_COUNT -gt 0 ]]; then
-        log_error "Setup completed with $FAILURE_COUNT errors. Please check the output above."
+    if [[ $failure_count -gt 0 ]]; then
+        log_error "Setup completed with $failure_count errors. Please check the output above."
         exit 1
     else
         log_success "Dotfiles setup completed successfully!"
@@ -301,21 +441,14 @@ main() {
         exit 0
     fi
     
-    log_info "Starting dotfiles setup..."
+    log_info "Starting dotfiles setup (parallel mode: $MAX_JOBS jobs)..."
     log_info "Script directory: $SCRIPT_DIR"
+    
+    # Initialize counters
+    init_counters
     
     # Check dependencies
     check_dependencies
-    
-    # Setup basic links
-    log_info "Setting up basic dotfiles..."
-    for link in "${BASIC_LINKS[@]}"; do
-        if [[ -e "$SCRIPT_DIR/$link" ]]; then
-            create_symlink "$SCRIPT_DIR/$link" "$HOME/$link"
-        else
-            log_warning "Source file not found: $SCRIPT_DIR/$link"
-        fi
-    done
     
     # Ensure .config directory exists
     if [[ ! -d "$HOME/.config" ]]; then
@@ -323,33 +456,62 @@ main() {
             log_info "Created .config directory"
         else
             log_error "Failed to create .config directory"
+            cleanup_counters
             exit 1
         fi
     fi
     
-    # Setup basic config links
-    log_info "Setting up .config dotfiles..."
-    for link in "${BASIC_CONFIG_LINKS[@]}"; do
-        if [[ -e "$SCRIPT_DIR/.config/$link" ]]; then
-            create_symlink "$SCRIPT_DIR/.config/$link" "$HOME/.config/$link"
-        else
-            log_warning "Source config not found: $SCRIPT_DIR/.config/$link"
-        fi
-    done
+    # Generate job lists
+    log_info "Generating parallel job lists..."
+    local -a basic_jobs config_jobs os_jobs
     
-    # Setup OS-specific dotfiles
-    setup_os_specific
+    # Basic dotfiles jobs
+    mapfile -t basic_jobs < <(generate_symlink_jobs "${BASIC_LINKS[@]}")
     
-    # Setup tmux plugin manager
+    # Config dotfiles jobs  
+    mapfile -t config_jobs < <(generate_config_symlink_jobs "${BASIC_CONFIG_LINKS[@]}")
+    
+    # OS-specific jobs
+    local os_name
+    os_name="$(uname)"
+    case "$os_name" in
+        "Darwin")
+            log_info "Detected macOS, preparing macOS-specific jobs"
+            mapfile -t -O ${#basic_jobs[@]} basic_jobs < <(generate_symlink_jobs "${MACOS_LINKS[@]}")
+            mapfile -t -O ${#config_jobs[@]} config_jobs < <(generate_config_symlink_jobs "${MACOS_CONFIG_LINKS[@]}")
+            ;;
+        "Linux")
+            log_info "Detected Linux, preparing Linux-specific jobs"
+            mapfile -t -O ${#basic_jobs[@]} basic_jobs < <(generate_symlink_jobs "${LINUX_LINKS[@]}")
+            mapfile -t -O ${#config_jobs[@]} config_jobs < <(generate_config_symlink_jobs "${LINUX_CONFIG_LINKS[@]}")
+            ;;
+        *)
+            log_warning "Unknown OS: $os_name. Skipping OS-specific setup."
+            ;;
+    esac
+    
+    # Execute jobs in parallel
+    log_info "Setting up basic dotfiles (${#basic_jobs[@]} files)..."
+    if [[ ${#basic_jobs[@]} -gt 0 ]]; then
+        run_parallel "${basic_jobs[@]}"
+    fi
+    
+    log_info "Setting up .config dotfiles (${#config_jobs[@]} files)..."
+    if [[ ${#config_jobs[@]} -gt 0 ]]; then
+        run_parallel "${config_jobs[@]}"
+    fi
+    
+    # Setup tmux plugin manager (not parallelized as it's a single operation)
     log_info "Setting up tmux plugin manager..."
     setup_tpm
     
-    # Print summary
+    # Print summary and cleanup
     print_summary
+    cleanup_counters
 }
 
 # Handle signals for cleanup
-trap 'log_error "Setup interrupted by signal"; exit 130' INT TERM
+trap 'log_error "Setup interrupted by signal"; cleanup_counters; exit 130' INT TERM
 
 # Run main function with all arguments
 main "$@"
