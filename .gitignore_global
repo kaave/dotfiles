@@ -412,6 +412,31 @@ replay_pid*
 *.sqlite
 *.sqlite3
 
+# Modern Development Tools (OS level only)
+
+# OS-level package manager caches
+.pnpm-store/
+.npm/_cacache/
+.yarn/cache/
+
+# General temp directories (OS level)
+.temp/
+.tmp/
+
+# Security files (should never be committed)
+*.pem
+*.key
+*.crt
+*.p12
+.env.local
+secrets.yml
+private.key
+
+# Database files (common across projects)
+*.db-journal
+*.db-wal
+*.db-shm
+
 # OS generated files
 .DS_Store?
 ehthumbs.db
