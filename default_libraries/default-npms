@@ -3,6 +3,7 @@ yarn
 pnpm
 bash-language-server
 neovim
+@anthropic-ai/claude-code
 textlint
 textlint-rule-preset-ja-technical-writing
 textlint-rule-preset-jtf-style
