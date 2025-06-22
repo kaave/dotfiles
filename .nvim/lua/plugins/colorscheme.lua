@@ -10,7 +10,7 @@ return {
     priority = 1000,
     config = function()
       require("solarized").setup({
-        variant = "winter", -- "spring" | "summer" | "autumn" | "winter"
+        variant = "autumn", -- "spring" | "summer" | "autumn" | "winter"
         palette = "solarized", -- solarized | selenized
         styles = {
           comments = { italic = true },
@@ -28,6 +28,8 @@ return {
         theme = "default", -- "default" | "neo"
         autocmd = true,
       })
+      vim.cmd.colorscheme("solarized")
+      vim.o.background = "dark"
     end,
   },
 }

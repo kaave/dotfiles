@@ -12,7 +12,7 @@ opt.clipboard = "unnamedplus"
 
 -- Display
 opt.number = true
-opt.relativenumber = true
+opt.relativenumber = false
 opt.signcolumn = "yes"
 opt.colorcolumn = "80"
 opt.cursorline = true
