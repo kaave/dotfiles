@@ -1,5 +1,9 @@
+#!/usr/bin/env zsh
+# Application-specific settings
+# This file contains configurations for various development tools
+
 # docker
-if [ -x "`which docker`" ]; then
+if command -v docker >/dev/null 2>&1; then
     alias dk='docker'
     alias dkc='docker-compose'
     alias dl="docker ps -l -q"
@@ -11,34 +15,28 @@ if [ -x "`which docker`" ]; then
     alias dki="docker run -i -t -P"
     alias dex="docker exec -i -t"
 
-    dstop() { docker stop $(docker ps -a -q); }
-    drm() { docker rm $(docker ps -a -q); }
+    # functions moved to functions.zsh
     alias drmf='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)'
-    dri() { docker rmi $(docker images -q); }
-    dbu() { docker build -t=$1 .; }
-    dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
-    dbash() { docker exec -it $(docker ps -aqf "name=$1") bash; }
 fi
 
 # vagrant
-if [ -x "`which vagrant`" ]; then
+if command -v vagrant >/dev/null 2>&1; then
     alias vg='vagrant'
     # Vagrantでupしてssh
     alias vgus='vagrant up;vagrant ssh'
 fi
 
-# composer
-[ -e ~/.composer ] && export PATH=$PATH:~/.composer/vendor/bin
+# composer - moved to path.zsh
 
 # python
-if [ -x "`which python`" ]; then
+if command -v python >/dev/null 2>&1; then
   alias venv='python -m venv'
   alias pysv='python -m http.server'
 fi
 
 [ -e ~/.rye/env ] && source "$HOME/.rye/env"
 
-if [ -x "`which pipenv`" ]; then
+if command -v pipenv >/dev/null 2>&1; then
     PIPENV_VENV_IN_PROJECT=1
     alias pe='pipenv'
     alias peg='pipenv graph'
@@ -49,26 +47,23 @@ if [ -x "`which pipenv`" ]; then
     alias pes='pipenv shell'
     alias peu='pipenv update'
     alias peui='pipenv uninstall'
-    palias() { alias | grep 'pipenv' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
-    eval "$(pipenv --completion)"
+    # palias function moved to functions.zsh
+    # completion moved to completion.zsh
 fi
 
 # Ruby
 # remove bundle exec
 RUBYGEMS_GEMDEPS=-
 # bundler
-if [ -x "`which bundle`" ]; then
+if command -v bundle >/dev/null 2>&1; then
     alias bl='bundle'
     alias be='bundle exec'
     alias bi='bundle install'
     alias binit='bundle install --path=vendor/bundle -j4'
-    balias() { alias | grep 'bundle' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
+    # balias function moved to functions.zsh
 fi
 
-# Go
-if [ -e $HOME/go ]; then
-    export PATH=$PATH:$HOME/go/bin
-fi
+# Go - moved to path.zsh
 
 # haskell
 [ -f "$HOME/.ghcup/env" ] && . $HOME/.ghcup/env # ghcup-env
@@ -79,21 +74,19 @@ fi
 #     alias runhaskell='stack runhaskell --'
 # fi
 
-# rustup
-[ -e ~/.cargo/bin ] && export PATH="$HOME/.cargo/bin:$PATH"
-[ -e ~/.local/bin ] && export PATH="$HOME/.local/bin:$PATH"
+# rustup - moved to path.zsh
 
 # anyenv
 if [ -e ~/.anyenv/ ]; then
-    export PATH="$HOME/.anyenv/bin:$PATH"
+    # PATH setting moved to path.zsh
     eval "$(anyenv init - bash)"
 fi
 
 # asdf
 [ -e ~/.asdf/ ] && . $HOME/.asdf/asdf.sh
 
-# mise
-if [ -x "`which mise`" ]; then
+# mise - modern version manager (preferred)
+if command -v mise >/dev/null 2>&1; then
     eval "$(mise activate zsh --shims)"
     eval "$(mise activate zsh)"
 fi

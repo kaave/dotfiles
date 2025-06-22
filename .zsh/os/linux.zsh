@@ -28,3 +28,9 @@ if type fzf >/dev/null 2>&1; then
         source /usr/share/fzf/completion.zsh
     fi
 fi
+
+# Linux specific settings
+if [[ -n "$DISPLAY" ]] && command -v xset >/dev/null 2>&1; then
+    # set key repeat
+    xset r rate 200 40
+fi

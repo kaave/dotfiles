@@ -1,8 +1,9 @@
 source ~/.zsh/plugins.zsh
 source ~/.zsh/global.zsh
+source ~/.zsh/path.zsh
 source ~/.zsh/compinit.zsh
+source ~/.zsh/completion.zsh
 source ~/.zsh/settings.zsh
-source ~/.zsh/keybinds.zsh
 source ~/.zsh/aliases.zsh
 source ~/.zsh/functions.zsh
 source ~/.zsh/app_settings.zsh
@@ -18,12 +19,6 @@ case ${OSTYPE} in
         ;;
 esac
 
-# pnpm
-export PNPM_HOME="~/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+# pnpm - moved to path.zsh
 #
 autorun_tmux

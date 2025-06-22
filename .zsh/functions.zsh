@@ -1,3 +1,7 @@
+#!/usr/bin/env zsh
+# Functions
+# This file contains custom shell functions
+
 # Load from .zshrc
 
 if [ -x "`which ffmpeg`" ]; then
@@ -69,37 +73,53 @@ if [ -x "`which fzf`" ]; then
 fi
 
 autorun_tmux() {
-    if [ "$TERM_PROGRAM" = "alacritty" ] || [ "$TERM_PROGRAM" = "iTerm.app" ] || ([ "$WSL_DISTRO_NAME" = "Ubuntu" ] && [ "$TERM_PROGRAM" = "" ]); then
-        # run tmux on startup
-        if [ -x "$(which tmux)" ] && [[ -z $TMUX && $- == *l* ]]; then
-            tmux list-sessions > /dev/null 2>&1
-            if [ $? -ne 0 ]; then
-                tmux -u new-session
-                return
-            fi
+    # Check if we should run tmux
+    local should_run_tmux=false
+    case "$TERM_PROGRAM" in
+        alacritty|iTerm.app) should_run_tmux=true ;;
+    esac
+    
+    # WSL specific check
+    [[ "$WSL_DISTRO_NAME" = "Ubuntu" && -z "$TERM_PROGRAM" ]] && should_run_tmux=true
+    
+    [[ "$should_run_tmux" != true ]] && return
 
-            ID="$(tmux list-sessions)"
-            new_session="Start New Session"
-            IDs="$ID"
-            IDs+="\n$new_session:"
-            choosed_session=$(echo -e "$IDs" | fzf | cut -d: -f1)
-
-            if [ "$choosed_session" = "${new_session}" ]; then
-                tmux -u new-session
-                return
-            fi
-
-            if [ -n "$choosed_session" ]; then
-                tmux -u attach-session -t "$choosed_session"
-                return
-            fi
-
-            : # Start terminal normally
+    # Run tmux on startup
+    if command -v tmux >/dev/null 2>&1 && [[ -z $TMUX && $- == *l* ]]; then
+        if ! tmux list-sessions >/dev/null 2>&1; then
+            tmux -u new-session
+            return
         fi
 
-        if [ "$(uname)" = "Linux" ]; then
-            # set key repeat
-            xset r rate 200 40
+        local sessions="$(tmux list-sessions)"
+        local new_session="Start New Session"
+        local all_sessions="$sessions\n$new_session:"
+        local chosen_session=$(echo -e "$all_sessions" | fzf | cut -d: -f1)
+
+        if [[ "$chosen_session" = "${new_session}" ]]; then
+            tmux -u new-session
+        elif [[ -n "$chosen_session" ]]; then
+            tmux -u attach-session -t "$chosen_session"
         fi
     fi
 }
+
+# Docker helper functions (moved from app_settings.zsh)
+if command -v docker >/dev/null 2>&1; then
+    dstop() { docker stop $(docker ps -a -q); }
+    drm() { docker rm $(docker ps -a -q); }
+    dri() { docker rmi $(docker images -q); }
+    dbu() { docker build -t=$1 .; }
+    dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
+    dbash() { docker exec -it $(docker ps -aqf "name=$1") bash; }
+fi
+
+# Pipenv helper function (moved from app_settings.zsh)
+if command -v pipenv >/dev/null 2>&1; then
+    palias() { alias | grep 'pipenv' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
+fi
+
+# Bundler helper function (moved from app_settings.zsh)
+if command -v bundle >/dev/null 2>&1; then
+    balias() { alias | grep 'bundle' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
+fi

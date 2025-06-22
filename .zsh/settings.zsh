@@ -1,3 +1,7 @@
+#!/usr/bin/env zsh
+# Shell settings
+# This file contains zsh-specific options and behaviors
+
 # 日本語ファイル名を表示可能にする
 setopt print_eight_bit
 
@@ -49,3 +53,5 @@ autoload run-help-svk
 #unalias run-help
 alias help=run-help
 
+# emacsモード
+bindkey -e

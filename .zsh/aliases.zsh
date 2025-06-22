@@ -1,3 +1,7 @@
+#!/usr/bin/env zsh
+# Aliases
+# This file contains command aliases
+
 alias la='ls -a'
 alias ll='ls -l'
 alias rm='rm -i'
@@ -9,10 +13,10 @@ alias mkdir='mkdir -p'
 alias sudo='sudo '
 
 # set wrapper commands
-[ -x "`which htop`" ] && alias top=htop
-[ -x "`which hub`" ] && alias git=hub
-[ -x "`which lsd`" ] && alias ls=lsd
-[ -x "`which bat`" ] && alias cat=bat
+command -v htop >/dev/null 2>&1 && alias top=htop
+command -v hub >/dev/null 2>&1 && alias git=hub
+command -v lsd >/dev/null 2>&1 && alias ls=lsd
+command -v bat >/dev/null 2>&1 && alias cat=bat
 
 #
 # global aliases.
@@ -27,13 +31,13 @@ alias -g M='| more'
 #   echo 'foobar' C
 #
 # see: http://mollifier.hatenablog.com/entry/20100317/p1
-if which pbcopy >/dev/null 2>&1 ; then
+if command -v pbcopy >/dev/null 2>&1; then
     # macOS
     alias -g C='| pbcopy'
-elif which xsel >/dev/null 2>&1 ; then
+elif command -v xsel >/dev/null 2>&1; then
     # Linux
     alias -g C='| xsel --input --clipboard'
-elif which putclip >/dev/null 2>&1 ; then
+elif command -v putclip >/dev/null 2>&1; then
     # Cygwin
     alias -g C='| putclip'
 fi

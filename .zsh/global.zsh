@@ -1,3 +1,7 @@
+#!/usr/bin/env zsh
+# Global settings
+# This file contains global environment variables and zsh configurations
+
 # 環境変数
 # export LANG=ja_JP.UTF-8
 

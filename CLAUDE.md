@@ -29,8 +29,11 @@ macOSとLinuxシステムをまたいだポリグロット開発環境のため�
 
 ### モジュラーシェル設定
 シェル設定はモジュラーアプローチに従います。メインの`.zshrc`は以下の順序でファイルを読み込みます：
-- `.zsh/plugins.zsh` - プラグイン管理（prezto/oh-my-zsh）
+- `.zsh/plugins.zsh` - プラグイン管理（zinit）
 - `.zsh/global.zsh` - グローバル環境変数
+- `.zsh/path.zsh` - PATH関連の設定
+- `.zsh/compinit.zsh` - 補完システムの初期化
+- `.zsh/completion.zsh` - アプリケーション固有の補完設定
 - `.zsh/settings.zsh` - シェルオプションと動作
 - `.zsh/aliases.zsh` - コマンドエイリアス
 - `.zsh/functions.zsh` - カスタムシェル関数

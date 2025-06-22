@@ -1,3 +1,7 @@
+#!/usr/bin/env zsh
+# Completion initialization
+# This file initializes the zsh completion system
+
 # 補完機能を有効にする
 autoload -Uz compinit
 compinit -u
