@@ -7,7 +7,7 @@ This directory contains modular tmux configuration files for better organization
 - **`core.conf`** - Core tmux settings (prefix key, escape time, terminal settings)
 - **`plugins.conf`** - Plugin management and TPM configuration
 - **`keybinds.conf`** - Key bindings and shortcuts
-- **`colors.conf`** - Color scheme and theming
+- **`colors.conf`** - Solarized Dark color scheme
 - **`statusbar.conf`** - Status bar configuration and formatting
 - **`macos.conf`** - macOS-specific settings (clipboard, shell)
 - **`linux.conf`** - Linux-specific settings (clipboard, shell)
