@@ -43,6 +43,9 @@ links=(
     # language support tools
     ".ctags"
     ".tern-project"
+    
+    # git
+    ".gitignore_global"
 )
 
 # .config links

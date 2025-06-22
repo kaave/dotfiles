@@ -2,7 +2,7 @@
     name = kaave
     email = junkjunctions@gmail.com
 [core]
-    excludesfile = /Users/kyosuke.abe/.gitignore_global
+    excludesfile = ~/.gitignore_global
     editor = nvim
     autocrlf = input
     ignorecase = false
@@ -48,7 +48,7 @@
     ca = commit --amend
     p = push
     po = push origin
-    pwb = ! git branch | grep -e '^\\* ' | sed -e 's/^\\* //g'
+    pwb = !git branch --show-current
     erase = !git reset --hard && git clean -fd
     d = diff
     # tig風のグラフを出力
@@ -63,12 +63,12 @@
     # GitHubのブランチを一括同期
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d; git remote -v update -p"
     # pull -f
-    force-pull = !git fetch && git reset --hard origin/$(git pwb)
+    force-pull = !git fetch && git reset --hard origin/$(git branch --show-current)
     # code の行数 (cloc に依存)
     cloc = !cloc $(git ls-files)
 [credential]
-    # helper = osxkeychain
-    helper = cache --timeout=43200
+    # Use macOS keychain for secure credential storage
+    helper = osxkeychain
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
