@@ -1,55 +1,60 @@
 #!/usr/bin/env bash
 
-set -u
+# Exit on any error, undefined variables, and pipe failures
+set -euo pipefail
 
-COLOR_RED='\033[0;31m'
-COLOR_BLUE='\033[0;36m'
-COLOR_NC='\033[0m' # No Color
+# Colors for output
+readonly COLOR_RED='\033[0;31m'
+readonly COLOR_GREEN='\033[0;32m'
+readonly COLOR_BLUE='\033[0;36m'
+readonly COLOR_YELLOW='\033[1;33m'
+readonly COLOR_NC='\033[0m' # No Color
 
-this_file_path=$(readlink -f "${BASH_SOURCE:-$0}")
-DIR_PATH=$(dirname "$this_file_path")
+# Get script directory
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly BACKUP_DIR="$HOME/.dotfiles_backup_$(date +%Y%m%d_%H%M%S)"
 
-links=(
+# Global counters
+declare -i SUCCESS_COUNT=0
+declare -i FAILURE_COUNT=0
+declare -i BACKUP_COUNT=0
+
+# Basic links
+readonly BASIC_LINKS=(
     # shell
-    # ".bash"
-    # ".bashrc"
-    # ".bash_profile"
     ".zsh"
     ".zshrc"
     ".zshenv"
     ".inputrc"
-
+    
     # linter
     ".textlintrc"
-
+    
     # tmux
     ".tmux.conf"
-
+    
     # git
     ".gitconfig"
-
+    ".gitignore_global"
+    
     # gem
     ".gemrc"
-
+    
     # vim (and clones)
     ".vim"
     ".vimrc"
     ".gvimrc"
-    # ".ideavimrc"
-
+    
     # emacs
     ".emacs.d"
-
+    
     # language support tools
     ".ctags"
     ".tern-project"
-    
-    # git
-    ".gitignore_global"
 )
 
-# .config links
-config_links=(
+# Basic .config links
+readonly BASIC_CONFIG_LINKS=(
     "alacritty"
     "nvim"
     "powerline"
@@ -58,76 +63,293 @@ config_links=(
     "tmux-powerline"
 )
 
-# tpm = Tmux Plugin Manager
-tpm_path="$HOME/.tmux/plugins/tpm"
-
-setup_macos() {
-  links=(
-    "${links[@]}"
+# macOS specific links
+readonly MACOS_LINKS=(
     ".xvimrc"
     ".skhdrc"
     ".yabairc"
-  )
-  config_links=("${config_links[@]}" "karabiner")
-}
+)
 
-setup_linux() {
-  links=(
-    "${links[@]}"
+readonly MACOS_CONFIG_LINKS=(
+    "karabiner"
+)
+
+# Linux specific links
+readonly LINUX_LINKS=(
     ".xinitrc"
     ".Xresources"
     ".xsession"
-  )
+)
 
-  config_links=(
-    "${config_links[@]}"
+readonly LINUX_CONFIG_LINKS=(
     "awesome"
     "fontconfig"
-  )
+)
+
+# Logging functions
+log_info() {
+    echo -e "${COLOR_BLUE}[INFO]${COLOR_NC} $1"
 }
 
+log_success() {
+    echo -e "${COLOR_GREEN}[SUCCESS]${COLOR_NC} $1"
+    ((SUCCESS_COUNT++))
+}
+
+log_warning() {
+    echo -e "${COLOR_YELLOW}[WARNING]${COLOR_NC} $1"
+}
+
+log_error() {
+    echo -e "${COLOR_RED}[ERROR]${COLOR_NC} $1" >&2
+    ((FAILURE_COUNT++))
+}
+
+# Backup existing file/link
+backup_existing() {
+    local target="$1"
+    
+    if [[ -e "$target" || -L "$target" ]]; then
+        # Create backup directory if it doesn't exist
+        if [[ ! -d "$BACKUP_DIR" ]]; then
+            mkdir -p "$BACKUP_DIR"
+            log_info "Created backup directory: $BACKUP_DIR"
+        fi
+        
+        local backup_path="$BACKUP_DIR/$(basename "$target")"
+        if mv "$target" "$backup_path" 2>/dev/null; then
+            log_warning "Backed up existing: $target → $backup_path"
+            ((BACKUP_COUNT++))
+            return 0
+        else
+            log_error "Failed to backup: $target"
+            return 1
+        fi
+    fi
+    return 0
+}
+
+# Create symlink with error handling and backup
 create_symlink() {
-  if ln -sf "$1" "$2"; then
-    echo -e "${COLOR_BLUE}Create symlink succeeded:${COLOR_NC} $2"
-  else
-    echo -e "${COLOR_RED}Create symlink failed:${COLOR_NC} $2"
-  fi
+    local source="$1"
+    local target="$2"
+    
+    # Check if source exists
+    if [[ ! -e "$source" ]]; then
+        log_error "Source does not exist: $source"
+        return 1
+    fi
+    
+    # Backup existing file/link if needed
+    if ! backup_existing "$target"; then
+        return 1
+    fi
+    
+    # Create parent directory if needed
+    local target_dir
+    target_dir="$(dirname "$target")"
+    if [[ ! -d "$target_dir" ]]; then
+        if mkdir -p "$target_dir" 2>/dev/null; then
+            log_info "Created directory: $target_dir"
+        else
+            log_error "Failed to create directory: $target_dir"
+            return 1
+        fi
+    fi
+    
+    # Create symlink
+    if ln -sf "$source" "$target" 2>/dev/null; then
+        log_success "Created symlink: $target → $source"
+        return 0
+    else
+        log_error "Failed to create symlink: $target → $source"
+        return 1
+    fi
 }
 
+# Setup tmux plugin manager
+setup_tpm() {
+    local tpm_path="$HOME/.tmux/plugins/tpm"
+    
+    if [[ -d "$tpm_path" ]]; then
+        log_info "TPM already exists: $tpm_path"
+        return 0
+    fi
+    
+    if git clone https://github.com/tmux-plugins/tpm "$tpm_path" 2>/dev/null; then
+        log_success "Cloned tmux plugin manager: $tpm_path"
+        return 0
+    else
+        log_error "Failed to clone tmux plugin manager"
+        return 1
+    fi
+}
+
+# Detect OS and setup appropriate links
+setup_os_specific() {
+    local os_name
+    os_name="$(uname)"
+    
+    case "$os_name" in
+        "Darwin")
+            log_info "Detected macOS, setting up macOS-specific dotfiles"
+            
+            # Setup macOS specific links
+            for link in "${MACOS_LINKS[@]}"; do
+                if [[ -f "$SCRIPT_DIR/$link" ]]; then
+                    create_symlink "$SCRIPT_DIR/$link" "$HOME/$link"
+                fi
+            done
+            
+            # Setup macOS specific config links
+            for link in "${MACOS_CONFIG_LINKS[@]}"; do
+                if [[ -d "$SCRIPT_DIR/.config/$link" ]]; then
+                    create_symlink "$SCRIPT_DIR/.config/$link" "$HOME/.config/$link"
+                fi
+            done
+            ;;
+            
+        "Linux")
+            log_info "Detected Linux, setting up Linux-specific dotfiles"
+            
+            # Setup Linux specific links
+            for link in "${LINUX_LINKS[@]}"; do
+                if [[ -f "$SCRIPT_DIR/$link" ]]; then
+                    create_symlink "$SCRIPT_DIR/$link" "$HOME/$link"
+                fi
+            done
+            
+            # Setup Linux specific config links
+            for link in "${LINUX_CONFIG_LINKS[@]}"; do
+                if [[ -d "$SCRIPT_DIR/.config/$link" ]]; then
+                    create_symlink "$SCRIPT_DIR/.config/$link" "$HOME/.config/$link"
+                fi
+            done
+            ;;
+            
+        *)
+            log_warning "Unknown OS: $os_name. Skipping OS-specific setup."
+            ;;
+    esac
+}
+
+# Validate dependencies
+check_dependencies() {
+    local missing_deps=()
+    
+    for cmd in git readlink; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            missing_deps+=("$cmd")
+        fi
+    done
+    
+    if [[ ${#missing_deps[@]} -gt 0 ]]; then
+        log_error "Missing required dependencies: ${missing_deps[*]}"
+        log_error "Please install the missing commands and try again."
+        exit 1
+    fi
+}
+
+# Print summary
+print_summary() {
+    echo
+    echo "============================================"
+    log_info "Setup Summary:"
+    echo "  ✅ Successful operations: $SUCCESS_COUNT"
+    if [[ $FAILURE_COUNT -gt 0 ]]; then
+        echo "  ❌ Failed operations: $FAILURE_COUNT"
+    fi
+    if [[ $BACKUP_COUNT -gt 0 ]]; then
+        echo "  📦 Files backed up: $BACKUP_COUNT"
+        echo "  📁 Backup location: $BACKUP_DIR"
+    fi
+    echo "============================================"
+    
+    if [[ $FAILURE_COUNT -gt 0 ]]; then
+        log_error "Setup completed with $FAILURE_COUNT errors. Please check the output above."
+        exit 1
+    else
+        log_success "Dotfiles setup completed successfully!"
+    fi
+}
+
+# Rollback function (for emergency use)
+rollback() {
+    if [[ -d "$BACKUP_DIR" ]]; then
+        log_info "Rolling back changes from: $BACKUP_DIR"
+        for backup_file in "$BACKUP_DIR"/*; do
+            if [[ -f "$backup_file" || -d "$backup_file" ]]; then
+                local original_path="$HOME/$(basename "$backup_file")"
+                if mv "$backup_file" "$original_path" 2>/dev/null; then
+                    log_success "Restored: $original_path"
+                else
+                    log_error "Failed to restore: $original_path"
+                fi
+            fi
+        done
+        rmdir "$BACKUP_DIR" 2>/dev/null || true
+    else
+        log_warning "No backup directory found for rollback."
+    fi
+}
+
+# Main function
 main() {
-  if ! type git >/dev/null 2>&1; then
-    echo -e "${COLOR_RED}git command not found.${COLOR_NC}"
-    exit 1
-  fi
-
-  if [ "$(uname)" = "Darwin" ]; then
-    setup_macos
-    echo "Running on macOS."
-  elif [ "$(uname)" = "Linux" ]; then
-    setup_linux
-    echo "Running on Linux."
-  fi
-
-  for link in "${links[@]}"; do
-    create_symlink "$DIR_PATH/$link" "$HOME/$link"
-  done
-
-  if [ ! -d "$HOME/.config" ]; then
-    mkdir -p "$HOME/.config"
-    echo "Create .config dir."
-  fi
-
-  for link in "${config_links[@]}"; do
-    create_symlink "$DIR_PATH/.config/$link" "$HOME/.config/$link"
-  done
-
-  if [ ! -d "$tpm_path" ]; then
-    git clone https://github.com/tmux-plugins/tpm "$tpm_path"
-    echo "tmux plugins cloned: $tpm_path"
-  fi
-
-  echo "-----------"
-  echo -e "${COLOR_BLUE}Dotfiles setup finished.${COLOR_NC}"
+    # Handle rollback request
+    if [[ "${1:-}" == "--rollback" ]]; then
+        rollback
+        exit 0
+    fi
+    
+    log_info "Starting dotfiles setup..."
+    log_info "Script directory: $SCRIPT_DIR"
+    
+    # Check dependencies
+    check_dependencies
+    
+    # Setup basic links
+    log_info "Setting up basic dotfiles..."
+    for link in "${BASIC_LINKS[@]}"; do
+        if [[ -e "$SCRIPT_DIR/$link" ]]; then
+            create_symlink "$SCRIPT_DIR/$link" "$HOME/$link"
+        else
+            log_warning "Source file not found: $SCRIPT_DIR/$link"
+        fi
+    done
+    
+    # Ensure .config directory exists
+    if [[ ! -d "$HOME/.config" ]]; then
+        if mkdir -p "$HOME/.config" 2>/dev/null; then
+            log_info "Created .config directory"
+        else
+            log_error "Failed to create .config directory"
+            exit 1
+        fi
+    fi
+    
+    # Setup basic config links
+    log_info "Setting up .config dotfiles..."
+    for link in "${BASIC_CONFIG_LINKS[@]}"; do
+        if [[ -e "$SCRIPT_DIR/.config/$link" ]]; then
+            create_symlink "$SCRIPT_DIR/.config/$link" "$HOME/.config/$link"
+        else
+            log_warning "Source config not found: $SCRIPT_DIR/.config/$link"
+        fi
+    done
+    
+    # Setup OS-specific dotfiles
+    setup_os_specific
+    
+    # Setup tmux plugin manager
+    log_info "Setting up tmux plugin manager..."
+    setup_tpm
+    
+    # Print summary
+    print_summary
 }
 
-main
+# Handle signals for cleanup
+trap 'log_error "Setup interrupted by signal"; exit 130' INT TERM
+
+# Run main function with all arguments
+main "$@"
