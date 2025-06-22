@@ -76,3 +76,4 @@ Temporary Items
 !.xmonad/xmonad.hs
 !.xmonad/xmobar.hs
 
+.claude/*.local.*

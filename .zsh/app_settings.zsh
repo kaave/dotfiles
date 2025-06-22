@@ -93,7 +93,10 @@ fi
 [ -e ~/.asdf/ ] && . $HOME/.asdf/asdf.sh
 
 # mise
-[ -x "`which mise`" ] && eval "$(mise activate zsh)"
+if [ -x "`which mise`" ]; then
+    eval "$(mise activate zsh --shims)"
+    eval "$(mise activate zsh)"
+fi
 
 # direnv
 [ -x "`which stack`" ] && eval "$(direnv hook zsh)"
