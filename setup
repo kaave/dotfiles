@@ -51,6 +51,7 @@ readonly BASIC_LINKS=(
     
     # tmux
     ".tmux.conf"
+    ".tmux"
     
     # git
     ".gitconfig"
@@ -78,7 +79,6 @@ readonly BASIC_CONFIG_LINKS=(
     "nvim"
     "powerline"
     "rofi"
-    "tmux"
     "tmux-powerline"
 )
 
@@ -272,8 +272,8 @@ generate_symlink_jobs() {
         local target="$HOME/$link"
         
         if [[ -e "$source" ]]; then
-            # Create a unique function name for this job
-            local job_func="job_$(echo "$link" | tr '/./' '___')"
+            # Create a unique function name for this job (remove problematic characters)
+            local job_func="job_$(echo "$link" | sed 's/[^a-zA-Z0-9]/_/g')"
             eval "$job_func() { create_symlink_worker '$source' '$target'; }"
             jobs+=("$job_func")
         fi
@@ -291,8 +291,8 @@ generate_config_symlink_jobs() {
         local target="$HOME/.config/$link"
         
         if [[ -e "$source" ]]; then
-            # Create a unique function name for this job
-            local job_func="config_job_$(echo "$link" | tr '/./' '___')"
+            # Create a unique function name for this job (remove problematic characters)
+            local job_func="config_job_$(echo "$link" | sed 's/[^a-zA-Z0-9]/_/g')"
             eval "$job_func() { create_symlink_worker '$source' '$target'; }"
             jobs+=("$job_func")
         fi
