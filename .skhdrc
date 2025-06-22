@@ -36,7 +36,7 @@ cmd + ctrl + shift - m : skhd -t "![must](https://img.shields.io/badge/%5B%F0%9F
 cmd + ctrl + shift - q : skhd -t "![q](https://img.shields.io/badge/%5B%F0%9F%99%8B_Q%5D-fcc800)"
 cmd + ctrl + shift - t : skhd -t "![Tweet](https://img.shields.io/badge/%5B%F0%9F%90%A4_Tweet%5D-1DA1F2)"
 
-# Window manager
+# Window manager - Grid positioning
 ## to Left
 cmd + ctrl + shift - h : yabai -m window --grid 1:7:0:0:2:1
 ## to Center
@@ -51,6 +51,11 @@ cmd + ctrl + shift - k : yabai -m window --grid 1:7:2:0:5:1
 cmd + ctrl + shift - space : yabai -m window --grid 5:7:2:1:3:3
 ## Fullscreen
 cmd + ctrl + shift - 0x24 : yabai -m window --grid 1:1:0:0:1:1
+
+# Window manager - Universal utilities
+
+## Restart yabai (useful for development)
+shift + lctrl + alt - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 
 # Zen mode
 cmd + ctrl + shift - z : shortcuts run "Zen: on"
