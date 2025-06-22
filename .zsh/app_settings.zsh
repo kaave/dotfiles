@@ -92,6 +92,9 @@ fi
 # asdf
 [ -e ~/.asdf/ ] && . $HOME/.asdf/asdf.sh
 
+# mise
+[ -x "`which mise`" ] && eval "$(mise activate zsh)"
+
 # direnv
 [ -x "`which stack`" ] && eval "$(direnv hook zsh)"
 
