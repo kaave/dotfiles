@@ -44,6 +44,9 @@ Temporary Items
 .Trash-*
 
 ### Manual ###
+*.env
+*_secret*
+.env.*
 .bash/bin/*
 !.bash/bin/.gitkeep
 .config/*
