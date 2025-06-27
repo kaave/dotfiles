@@ -68,6 +68,9 @@ readonly BASIC_LINKS=(
     # emacs
     ".emacs.d"
     
+    # AI Agent
+    ".claude"
+    
     # language support tools
     ".ctags"
     ".tern-project"
