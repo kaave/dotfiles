@@ -4,6 +4,7 @@ pnpm
 bash-language-server
 neovim
 @anthropic-ai/claude-code
+@google/gemini-cli
 textlint
 textlint-rule-preset-ja-technical-writing
 textlint-rule-preset-jtf-style
