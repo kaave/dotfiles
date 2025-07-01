@@ -72,7 +72,7 @@ if [ -x "`which fzf`" ]; then
     }
 fi
 
-# git worktree を便利に使うための関数 `gw` (安定版)
+# git worktree を便利に使うための関数 `gw` (安全装置つき)
 #
 gw() {
   # --- サブ関数定義 ---
@@ -90,6 +90,23 @@ gw() {
     echo "  -h, --help                このヘルプメッセージを表示します"
   }
 
+  # ★追加: gwワークツリー内にいるかチェックする関数
+  _gw_check_inside_wt() {
+    # 現在のワークツリーのルートパスを取得
+    local current_wt_root
+    current_wt_root=$(git rev-parse --work-tree 2>/dev/null)
+
+    # パスに '.git/wt/' が含まれているかで判定
+    if [[ "$current_wt_root" == *'/.git/wt/'* ]]; then
+      echo "⚠️  Error: 'gw'で作成したワークツリー内ではこの操作はできません。" >&2
+      echo "  メインディレクトリに戻ってから再度実行してください。" >&2
+      echo "  Hint: cd \"\$(git rev-parse --show-toplevel)\"" >&2
+      return 1 # 失敗ステータス
+    fi
+    return 0 # 成功ステータス
+  }
+
+
   _gw_list() {
     local repo_root="$1"
     git -C "$repo_root" worktree list
@@ -98,45 +115,33 @@ gw() {
   _gw_delete() {
     local repo_root="$1"
     local workspace_name="$2"
-
     if [[ -z "$workspace_name" ]]; then
       echo "Error: 削除するWORKSPACE_NAMEを指定してください。" >&2; _gw_usage; return 1
     fi
-
-    # ★変更点: 先にリポジトリルートへ移動
     cd "$repo_root"
-
     echo "🗑️  ワークツリーとブランチ '$workspace_name' の削除を試みます..."
-    local wt_path_to_remove=".git/wt/$workspace_name" # ルートからの相対パスでOK
-
+    local wt_path_to_remove=".git/wt/$workspace_name"
     if git worktree list | grep -q " $wt_path_to_remove "; then
         echo "Removing worktree: $wt_path_to_remove"
         git worktree remove --force "$wt_path_to_remove"
     else
         echo "Info: ワークツリー '$workspace_name' は見つかりませんでした。"
     fi
-
     if git rev-parse --verify "$workspace_name" &>/dev/null; then
       echo "Deleting branch: $workspace_name"
       git branch -D "$workspace_name"
     else
       echo "Info: ブランチ '$workspace_name' は見つかりませんでした。"
     fi
-
     git worktree prune
     echo "✅ 削除が完了しました。"
-    return 0
   }
 
   _gw_cleanup() {
     local repo_root="$1"
-
-    # ★変更点: 先にリポジトリルートへ移動
     cd "$repo_root"
-
     echo "🧹 マージ済みのワークツリーとブランチを一括削除します..."
-
-    # ... (内部ロジックは変更なし、ただしgitコマンドから -C を削除)
+    # ...(中略)...
     local default_branch
     if git show-ref --verify --quiet refs/heads/main; then
       default_branch="main"
@@ -146,39 +151,31 @@ gw() {
       echo "Error: 'main' または 'master' ブランチが見つかりません。" >&2; return 1
     fi
     echo "Info: デフォルトブランチは '$default_branch' です。"
-
     declare -A worktree_map
     while read -r path head branch; do
       worktree_map["$(echo "$branch" | tr -d '[]')"]="$path"
     done < <(git worktree list)
-
     local to_delete_branches=()
     local merged_branches
     merged_branches=$(git branch --merged "$default_branch" | tr -d '*' | awk '{$1=$1};1' | grep -vE "^${default_branch}$")
-
     for branch in $merged_branches; do
       if [[ -n "${worktree_map[$branch]}" && "${worktree_map[$branch]}" == *".git/wt/"* ]]; then
         to_delete_branches+=("$branch")
       fi
     done
-
     if [[ ${#to_delete_branches[@]} -eq 0 ]]; then
       echo "✅ 削除対象のワークツリーはありません。"; return 0
     fi
-
     echo "以下のワークツリーとブランチが削除されます:"
     for branch in "${to_delete_branches[@]}"; do
       echo "  - Branch: $branch, Worktree: ${worktree_map[$branch]}"
     done
-
     read -p "よろしいですか？ [y/N]: " answer
     if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
       echo "キャンセルしました。"; return 0
     fi
-
     echo "削除を開始します..."
     for branch in "${to_delete_branches[@]}"; do
-      # _gw_deleteを呼び出す代わりに直接処理
       echo "--- Deleting $branch ---"
       local wt_path_to_remove=".git/wt/$branch"
       git worktree remove --force "$wt_path_to_remove"
@@ -204,20 +201,23 @@ gw() {
       _gw_list "$repo_root"
       ;;
     cleanup)
+      # ★追加: cleanup前にもチェック
+      if ! _gw_check_inside_wt; then return 1; fi
       _gw_cleanup "$repo_root"
       ;;
     -D|--delete)
+      # ★追加: delete前にもチェック
+      if ! _gw_check_inside_wt; then return 1; fi
       _gw_delete "$repo_root" "$2"
       ;;
     *)
-      # --- 作成 / 切り替え処理 ---
-      # ★変更点: 先にリポジトリルートへ移動
-      cd "$repo_root"
+      # ★追加: 作成/切り替え前にもチェック
+      if ! _gw_check_inside_wt; then return 1; fi
 
+      cd "$repo_root"
       local workspace_name="$1"
       mkdir -p ".git/wt"
-      local worktree_path=".git/wt/$workspace_name" # ルートからの相対パスでOK
-
+      local worktree_path=".git/wt/$workspace_name"
       if git worktree list | grep -q " $worktree_path "; then
         echo "🌳 既存のワークツリー '$workspace_name' に切り替えます。"
         cd "$worktree_path"
