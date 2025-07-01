@@ -79,13 +79,16 @@ gw() {
 
   # ヘルプメッセージ
   _gw_usage() {
-    echo "Usage: gw <command> [arguments]"
+    echo "Usage: gw <command | workspace_name> [arguments]"
+    echo ""
+    echo "A helper function to manage git worktrees efficiently."
     echo ""
     echo "Commands:"
-    echo "  <workspace_name>          作成または切り替えるワークツリー/ブランチの名前"
+    echo "  <workspace_name>          ワークツリーとブランチを作成または切り替えます"
     echo "  list, ls                  ワークツリーの一覧を表示します"
     echo "  cleanup                   マージ済みのワークツリーとブランチを一括削除します"
     echo "  -D, --delete <ws_name>    指定したワークツリーとブランチを削除します"
+    echo "  -h, --help                このヘルプメッセージを表示します"
   }
 
   # 一覧表示
@@ -97,8 +100,8 @@ gw() {
 
   # 個別削除
   _gw_delete() {
-    local workspace_name="$2" # 引数の位置が変わる
     local repo_root="$1"
+    local workspace_name="$2"
 
     if [[ -z "$workspace_name" ]]; then
       echo "Error: 削除するWORKSPACE_NAMEを指定してください。" >&2
@@ -107,7 +110,6 @@ gw() {
     fi
 
     echo "🗑️  ワークツリーとブランチ '$workspace_name' の削除を試みます..."
-    # (処理内容は前回のものと同じ)
     local wt_path_to_remove
     wt_path_to_remove=$(git -C "$repo_root" worktree list | awk -v name="\[$workspace_name\]" '$3 == name {print $1}')
     if [[ -n "$wt_path_to_remove" ]]; then
@@ -191,6 +193,14 @@ gw() {
     _gw_usage
     return 1
   fi
+
+  # ヘルプが先に評価されるように、リポジトリチェックの前に置く
+  case "$1" in
+    -h|--help)
+      _gw_usage
+      return 0
+      ;;
+  esac
 
   local repo_root
   if ! repo_root=$(git rev-parse --show-toplevel 2>/dev/null); then
