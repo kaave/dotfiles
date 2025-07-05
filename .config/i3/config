@@ -1,5 +1,6 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# Mod4 = Super
 set $mod Mod4
 set $Locker i3lock && sleep 1
 
@@ -21,8 +22,8 @@ bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle && $refresh_
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%- && $refresh_i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+ && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id amixer set Capture toggle && $refresh_i3status
-bindsym XF86MonBrightnessUp exec --no-startup-id light -A 2 && $refresh_i3status
-bindsym XF86MonBrightnessDown exec --no-startup-id light -U 2 && $refresh_i3status
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 2%+ && $refresh_i3status
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 2%- && $refresh_i3status
 
 # Screen Capture & Recorder
 bindsym $mod+Shift+4 exec --no-startup-id ksnip -r
@@ -107,9 +108,9 @@ bindsym ctrl+Shift+0 move container to workspace $ws0
 # application's default workspaces
 # tips: get app's class name run xprop
 for_window [class="Brave-browser"]    move to workspace $ws1
-for_window [class="Slack"]            move to workspace $ws2
-for_window [class="sidekick-browser"] move to workspace $ws3
-for_window [class="Notepadqq"]        move to workspace $ws8
+# for_window [class="Slack"]            move to workspace $ws2
+# for_window [class="sidekick-browser"] move to workspace $ws3
+# for_window [class="Notepadqq"]        move to workspace $ws8
 for_window [class="Code"]             move to workspace $ws9
 for_window [class="Alacritty"]        move to workspace $ws0
 
@@ -160,12 +161,16 @@ bindsym $mod+shift+q exec $Locker
 exec --no-startup-id nm-applet
 exec --no-startup-id dunst
 exec --no-startup-id volumeicon
+exec --no-startup-id fcitx5
+# ctrl + nがちゃんと動かなくなる
+# exec --no-startup-id /home/kaave/.xkeysnail/start.bash
+exec --no-startup-id xset r rate 200 40
 
 exec --no-startup-id brave
-exec --no-startup-id slack
+# exec --no-startup-id slack
 # exec --no-startup-id ticktick
-exec --no-startup-id sidekick-browser-stable
-exec --no-startup-id notepadqq
+# exec --no-startup-id sidekick-browser-stable
+# exec --no-startup-id notepadqq
 exec --no-startup-id code
 exec --no-startup-id alacritty
 
