@@ -93,16 +93,14 @@ gw() {
   # ★追加: gwワークツリー内にいるかチェックする関数
   _gw_check_inside_wt() {
     # 現在のワークツリーのルートパスを取得
-    local current_wt_root
-    current_wt_root=$(git rev-parse --work-tree 2>/dev/null)
-
     # パスに '.git/wt/' が含まれているかで判定
-    if [[ "$current_wt_root" == *'/.git/wt/'* ]]; then
+    if [[ "$(git rev-parse --git-dir)" == *'/.git/worktrees/'* ]]; then
       echo "⚠️  Error: 'gw'で作成したワークツリー内ではこの操作はできません。" >&2
       echo "  メインディレクトリに戻ってから再度実行してください。" >&2
       echo "  Hint: cd \"\$(git rev-parse --show-toplevel)\"" >&2
       return 1 # 失敗ステータス
     fi
+
     return 0 # 成功ステータス
   }
 
