@@ -1,6 +1,10 @@
 {
   "permissions": {
-    "defaultMode": "acceptEdits"
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(gh pr:*)",
+      "Bash(mkdir:*)"
+    ]
   },
   "env": {
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": true

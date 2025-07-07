@@ -90,8 +90,8 @@ AI運用6原則
 
 (概要)
 
-(Optional **根拠**: 根拠を提示。)
-(Optional **改善案**: 改善案を提示)
+(Optional **根拠**: 根拠を提示)
+(Optional **改善案**: 改善案を具体的な差分コードで提示。コード化が難しい場合は文章で)
         </review_result_point_format>
         <code_review_behavior>
 gh コマンドを活用する。インストールされていない場合はインストールを要求してよい。
