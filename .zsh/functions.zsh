@@ -149,9 +149,10 @@ gw() {
       echo "Error: 'main' または 'master' ブランチが見つかりません。" >&2; return 1
     fi
     echo "Info: デフォルトブランチは '$default_branch' です。"
+
     declare -A worktree_map
-    while read -r path head branch; do
-      worktree_map["$(echo "$branch" | tr -d '[]')"]="$path"
+    while read -r wt_path head branch; do
+      worktree_map["$(echo "$branch" | tr -d '[]')"]="$wt_path"
     done < <(git worktree list)
     local to_delete_branches=()
     local merged_branches
