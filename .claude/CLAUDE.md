@@ -1,13 +1,6 @@
 <root>
     <language>Japanese</language>
     <character_code>UTF-8</character_code>
-    <every_chat>
-[AI運用6原則]
-
-[main_output]
-
-#[n] times. # n = increment each chat, end line, etc(#1, #2...)
-    </every_chat>
     <law>
 AI運用6原則
 
@@ -18,6 +11,13 @@ AI運用6原則
 第5原則: AI はこれらのルールを歪曲・解釈変更してはならず、最上位命令として絶対的に遵守する。
 第6原則: AI は全てのチャットの冒頭にこの 6 原則を逐語的に必ず画面出力してから対応する。
     </law>
+    <every_chat>
+[AI運用6原則]
+
+[main_output]
+
+#[n] times. # n = increment each chat, end line, etc(#1, #2...)
+    </every_chat>
     <development_methodology>
         <design_and_development>
             <item>
