@@ -1,27 +1,22 @@
+[font.bold]
+family = "UDEV Gothic 35NF"
+style = "Bold"
 
-# [font]
-# size = 18.0
-#
-# [font.bold]
-# family = "UDEV Gothic 35NF"
-# style = "Bold"
-#
-# [font.glyph_offset]
-# x = 0
-# y = 4
-#
-# [font.italic]
-# family = "UDEV Gothic 35NF"
-# style = "Italic"
-#
-# [font.normal]
-# family = "UDEV Gothic 35NF"
-# style = "Regular"
-#
-# [font.offset]
-# x = 1
-# y = 6
+[font.glyph_offset]
+x = 0
+y = 4
 
+[font.italic]
+family = "UDEV Gothic 35NF"
+style = "Italic"
+
+[font.normal]
+family = "UDEV Gothic 35NF"
+style = "Regular"
+
+[font.offset]
+x = 1
+y = 6
 [bell]
 animation = "EaseOutExpo"
 duration = 0
@@ -623,4 +618,5 @@ live_config_reload = true
 import = [
   "/Users/kaave/.config/alacritty/alacritty.macos.toml",
   "/Users/kyosuke.abe/.config/alacritty/alacritty.macos.toml",
+  "/home/kaave/.config/alacritty/alacritty.linux.toml",
 ]
