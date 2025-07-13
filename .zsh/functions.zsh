@@ -255,7 +255,8 @@ autorun_tmux() {
     [[ "$should_run_tmux" != true ]] && return
 
     # Run tmux on startup
-    if command -v tmux >/dev/null 2>&1 && [[ -z $TMUX && $- == *l* ]]; then
+    # if command -v tmux >/dev/null 2>&1 && [[ -z $TMUX && $- == *l* ]]; then
+    if command -v tmux >/dev/null 2>&1 && [[ -z $TMUX ]]; then
         if ! tmux list-sessions >/dev/null 2>&1; then
             tmux -u new-session
             return

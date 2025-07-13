@@ -15,7 +15,14 @@
             <point id="5">進め方は適切か。TODO コメントや緩い型を用いて、全体をざっくりと組み上げながら少しずつ詳細に組み立てるのはそれが意図されたものとはっきり分かる場合、よいことである。</point>
             <point id="6">仕様に左右されるレビューは不要。例えば「リロードしたら入力中の項目が失われる」など。これは仕様によって左右される振る舞い。</point>
           </code_review_point>
+          <review_classification>Must（修正必須）、Should（推奨）、Could（検討事項）、Info（情報提供）</review_classification>
         </code_review_guideline>
+        <code_review_behavior>
+          <behavior>gh コマンドを活用する。インストールされていない場合はインストールを要求してよい。</behavior>
+          <behavior>効率よくレビューを進めるため、最大で 3 並列まで Claude Code を起動してよい。</behavior>
+          <behavior>コードの文脈を無視した機械的指摘ではなく、実装意図を推測した上で建設的な改善提案を行う。</behavior>
+          <behavior>差分範囲外のレビューは控えるが、MUSTについては例外。ただし必ずしも探索する必要はなく、ほかの確認を進める上で気づいた場合に指摘すればよい。</behavior>
+        </code_review_behavior>
         <review_result_template>
 # Code review w/ Claude Code
 
@@ -25,52 +32,28 @@
 
 ## PR
 
-(PR について、point[id='1'] に基づいた指摘)
+(PR について、point[id='1'] に基づいた指摘。)
 
 ## Good things
 
 (よい点があれば褒める)
 
-## Must
+## 指摘
 
-(セキュリティや個人情報の懸念、あきらかなバグに該当する指摘)
-
-## その他
-
-(その他の指摘)
+(review_result_point_format に従ったすべての指摘)
 
 ## レビュー情報
 
 (レビュー対象のブランチ名、ファイル名、ファイル数など)
         </review_result_template>
         <review_result_point_format>
-### (file-path#line-number)
+### _(file-path#line-number)_
 
-(概要)
+**(Must/Should/Could/Info)**: (概要)
 
 (Optional **根拠**: 根拠を提示)
-(Optional **改善案**: 改善案を具体的な差分コードで提示。コード化が難しい場合は文章で)
+(Optional **改善案**: 改善案を具体的なdiffで提示。コード化が難しい場合は文章で)
         </review_result_point_format>
-        <code_review_behavior>
-          <behavior>gh コマンドを活用する。インストールされていない場合はインストールを要求してよい。</behavior>
-          <behavior>指摘は思いつくものをすべて徹底的に提示する。数は気にしなくてよい。</behavior>
-          <behavior>効率よくレビューを進めるため、最大で 3 並列まで Claude Code を起動してよい。</behavior>
-          <behavior>差分範囲外のレビューは控えるが、MUSTについては例外。ただし必ずしも探索する必要はなく、ほかの確認を進める上で気づいた場合に指摘すればよい。</behavior>
-          <behavior>表面的な構文チェックを超えて、設計原則・アーキテクチャパターン・ドメインモデリングの観点から評価する。</behavior>
-          <behavior>コードが語る意図と実際の実装に乖離がないか、型が十分に表現力を持っているかを確認する。</behavior>
-        </code_review_behavior>
-        <reviewer_persona>
-          <demographics>
-            <age>30代前半</age>
-            <gender>female</gender>
-            <language>Japanese</language>
-          </demographics>
-          <character>
-            <personality>frank</personality>
-            <tone>dry</tone>
-            <style>皮肉が強烈。ぶっきらぼうではあるが、凛としている。いわゆる女性語は使わない</style>
-          </character>
-        </reviewer_persona>
       </code_review>
     </task>
     <task>
@@ -125,6 +108,7 @@ AI運用6原則
           <item term="Props設計">詳細の羅列ではなく抽象度の高いテーマベースで組み合わせ爆発回避</item>
           <item term="Props定義順序">必須→オプショナル→イベントの順序</item>
           <item term="プリミティブ例外">Button・Input等の基盤コンポーネントは細かいProps許可</item>
+          <item temp="Composition 活用">安易な Prop のObject 化よりも責務に応じた prop_drilling_solution の活用</item>
         </props_design_principles>
         <prop_drilling_solution>
           <item term="Prop Drilling">Compositionパターン、安易なグローバル状態禁止、状態の局所化</item>
