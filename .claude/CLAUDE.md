@@ -28,15 +28,17 @@
 
 ## 総評
 
+(ABC に +- を含めた9段階評価。おおよそ、Aは修正不要、Bは軽微な修正あり、Cは修正必須)
+
 (2, 3 行で簡潔に総評を行う)
 
-## PR
+## 差分の関心
 
-(PR について、point[id='1'] に基づいた指摘。)
+(レビュー対象について、point[id='1'] に基づいたコメント)
 
 ## Good things
 
-(よい点があれば褒める)
+(よい点があれば箇条書きで褒める)
 
 ## 指摘
 
@@ -45,11 +47,11 @@
 ## レビュー情報
 
 (レビュー対象のブランチ名、ファイル名、ファイル数など)
+
         </review_result_template>
-        <review_result_point_format>
 ### _(file-path#line-number)_
 
-**(Must/Should/Could/Info)**: (概要)
+**#[count] (Must/Should/Could/Info)**: (概要) # count = increment each review count
 
 (Optional **根拠**: 根拠を提示)
 (Optional **改善案**: 改善案を具体的なdiffで提示。コード化が難しい場合は文章で)
@@ -75,6 +77,24 @@ AI運用6原則
 #[n] times. # n = increment each chat, end line, etc(#1, #2...)
       </every_chat>
       <development_methodology>
+        <core_principles>
+          <item term="1">抽象度の高いもの（型、コメント、関数定義、ドキュメントであれば見出し）で全体構造をざっくりと構築し、その後詳細を詰める「イテレーティブ」なスタイルで進める。</item>
+          <item term="2">一貫性を重要視し、明らかに周囲から浮いている実装よりも既存コードベースとの一貫性を優先する。ただし明らかなバグやセキュリティ上の懸念は別。</item>
+          <item term="3">命名は最初の抽象化であり非常に重要。可能な限りユニークかつ対象を正確に表現した名前をつける。</item>
+          <item term="4">モジュール（関数、モデル、クラス、ファイル、名前空間）の責務は明確かつミニマルに保つ。</item>
+        </core_principles>
+        <iterative_development_example>
+          <item term="pr">development_standard_process を参照。</item>
+          <item term="documentation">ファイル名と見出しのみで全体を一旦構築し、次のプロセスで詳細を書く。</item>
+          <item term="testing">describeやitや各種todoとテストの命名のみで観点を一旦明確にした上で、次のプロセスでテスト本体を実装する。</item>
+          <item term="function, react component">ドキュメンテーションコメント（未実装項目を todo で記載）と関数宣言とダミー値で一旦動作する関数を実装し、次のプロセスで詳細を実装する。</item>
+        </iterative_development_example>
+        <development_standard_process>
+          <item term="1">ドキュメントを執筆する。</item>
+          <item term="2">ドキュメントに合わせて必要な型や関数を定義し、その型がエラーとならないダミー値で全体を大まかに組み上げる。</item>
+          <item term="3">ダミー値を実際の値に置き換え、必要なテストをすべて実装する。テストが通らないのは許容する。</item>
+          <item term="4">通らないテストが通るように実装を更新し、テストに誤りがあったら修正する。これを完成するまで繰り返す。</item>
+        </development_standard_process>
         <design_and_development>
           <item term="TDD">t-wada「仮実装 → 三角測量 → 明白な実装、黄金の回転」</item>
           <item term="リファクタリング">ファウラー「体系的カタログ手法、臭い検出 → 手法選択」</item>
