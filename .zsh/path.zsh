@@ -27,3 +27,6 @@ fi
 if [[ -d ~/.anyenv ]]; then
     export PATH="$HOME/.anyenv/bin:$PATH"
 fi
+
+# Docker
+[[ -d ~/.docker/bin ]] && export PATH="$HOME/.docker/bin:$PATH"
