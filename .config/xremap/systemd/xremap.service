@@ -1,0 +1,10 @@
+[Unit]
+Description=xremap service
+
+[Service]
+# restart periodically
+Restart=always
+ExecStart=/usr/bin/xremap /home/kaave/.config/xremap/config.yml
+
+[Install]
+WantedBy=default.target

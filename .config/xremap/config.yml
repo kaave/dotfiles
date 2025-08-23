@@ -1,0 +1,35 @@
+modmap:
+  - name: Global
+    remap:
+      # CapsLock/Ctrl_L -> Esc
+      CapsLock: Ctrl_R
+      Ctrl_L: Alt_L
+      Alt_L: Ctrl_L
+      Ctrl_R: Alt_R
+      Alt_R: Ctrl_R
+keymap:
+  - name: Emacs
+    application:
+      not: [Emacs, code, Alacritty]
+    remap:
+      # Cursor
+      Ctrl_R-b: { with_mark: left }
+      Ctrl_R-f: { with_mark: right }
+      Ctrl_R-p: { with_mark: up }
+      Ctrl_R-n: { with_mark: down }
+      # Beginning/End of line
+      Ctrl_R-a: { with_mark: home }
+      Ctrl_R-e: { with_mark: end }
+      # Page up/down
+      M-v: { with_mark: pageup }
+      Ctrl_R-v: { with_mark: pagedown }
+      # Newline
+      Ctrl_R-m: enter
+      Ctrl_R-j: enter
+      Ctrl_R-o: [enter, left]
+      Ctrl_R-y: [C-v, { set_mark: false }]
+      # Delete
+      Ctrl_R-d: [delete, { set_mark: false }]
+      Ctrl_R-h: [backspace, { set_mark: false }]
+      # Kill line
+      Ctrl_R-k: [Shift-end, C-x, { set_mark: false }]

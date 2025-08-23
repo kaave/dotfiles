@@ -65,6 +65,7 @@ Temporary Items
 !.config/fish/kaave
 !.config/fish/config.fish
 !.config/fish/fishfile
+!.config/xremap
 
 .emacs.d/*/*
 !.emacs.d/details/*

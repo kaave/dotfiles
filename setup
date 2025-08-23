@@ -33,32 +33,32 @@ readonly BASIC_LINKS=(
     ".zshrc"
     ".zshenv"
     ".inputrc"
-    
+
     # linter
     ".textlintrc"
-    
+
     # tmux
     ".tmux.conf"
     ".tmux"
-    
+
     # git
     ".gitconfig"
     ".gitignore_global"
-    
+
     # gem
     ".gemrc"
-    
+
     # vim (and clones)
     ".vim"
     ".vimrc"
     ".gvimrc"
-    
+
     # emacs
     ".emacs.d"
-    
+
     # AI Agent
     ".claude"
-    
+
     # language support tools
     ".ctags"
     ".tern-project"
@@ -94,6 +94,7 @@ readonly LINUX_LINKS=(
 readonly LINUX_CONFIG_LINKS=(
     "awesome"
     "fontconfig"
+    "xremap"
 )
 
 # Logging functions
@@ -118,14 +119,14 @@ log_error() {
 # Backup existing file/link
 backup_existing() {
     local target="$1"
-    
+
     if [[ -e "$target" || -L "$target" ]]; then
         # Create backup directory if it doesn't exist
         if [[ ! -d "$BACKUP_DIR" ]]; then
             mkdir -p "$BACKUP_DIR"
             log_info "Created backup directory: $BACKUP_DIR"
         fi
-        
+
         local backup_path="$BACKUP_DIR/$(basename "$target")"
         if mv "$target" "$backup_path" 2>/dev/null; then
             log_warning "Backed up existing: $target → $backup_path"
@@ -143,18 +144,18 @@ backup_existing() {
 create_symlink() {
     local source="$1"
     local target="$2"
-    
+
     # Check if source exists
     if [[ ! -e "$source" ]]; then
         log_error "Source does not exist: $source"
         return 1
     fi
-    
+
     # Backup existing file/link if needed
     if ! backup_existing "$target"; then
         return 1
     fi
-    
+
     # Create parent directory if needed
     local target_dir
     target_dir="$(dirname "$target")"
@@ -166,7 +167,7 @@ create_symlink() {
             return 1
         fi
     fi
-    
+
     # Create symlink
     if ln -sf "$source" "$target" 2>/dev/null; then
         log_success "Created symlink: $target → $source"
@@ -180,12 +181,12 @@ create_symlink() {
 # Setup tmux plugin manager
 setup_tpm() {
     local tpm_path="$HOME/.tmux/plugins/tpm"
-    
+
     if [[ -d "$tpm_path" ]]; then
         log_info "TPM already exists: $tpm_path"
         return 0
     fi
-    
+
     if git clone https://github.com/tmux-plugins/tpm "$tpm_path" 2>/dev/null; then
         log_success "Cloned tmux plugin manager: $tpm_path"
         return 0
@@ -198,11 +199,11 @@ setup_tpm() {
 # Setup links for given array
 setup_links() {
     local -a links=("$@")
-    
+
     for link in "${links[@]}"; do
         local source="$SCRIPT_DIR/$link"
         local target="$HOME/$link"
-        
+
         # Simple existence check using ls
         if ls "$source" >/dev/null 2>&1; then
             create_symlink "$source" "$target"
@@ -213,11 +214,11 @@ setup_links() {
 # Setup config links for given array
 setup_config_links() {
     local -a links=("$@")
-    
+
     for link in "${links[@]}"; do
         local source="$SCRIPT_DIR/.config/$link"
         local target="$HOME/.config/$link"
-        
+
         # Simple existence check using ls
         if ls "$source" >/dev/null 2>&1; then
             create_symlink "$source" "$target"
@@ -229,7 +230,7 @@ setup_config_links() {
 setup_os_specific() {
     local os_name
     os_name="$(uname)"
-    
+
     case "$os_name" in
         "Darwin")
             log_info "Detected macOS, setting up macOS-specific dotfiles"
@@ -240,6 +241,8 @@ setup_os_specific() {
             log_info "Detected Linux, setting up Linux-specific dotfiles"
             setup_links "${LINUX_LINKS[@]}"
             setup_config_links "${LINUX_CONFIG_LINKS[@]}"
+            systemctl --user enable /home/kaave/.config/xremap/systemd/xremap.service
+            systemctl --user start xremap.service
             ;;
         *)
             log_warning "Unknown OS: $os_name. Skipping OS-specific setup."
@@ -261,7 +264,7 @@ print_summary() {
         echo "  📁 Backup location: $BACKUP_DIR"
     fi
     echo "============================================"
-    
+
     if [[ $FAILURE_COUNT -gt 0 ]]; then
         log_error "Setup completed with $FAILURE_COUNT errors. Please check the output above."
         exit 1
@@ -294,16 +297,16 @@ rollback() {
 main() {
     # Explicitly disable exit on error
     set +e
-    
+
     # Handle rollback request
     if [[ "${1:-}" == "--rollback" ]]; then
         rollback
         exit 0
     fi
-    
+
     log_info "Starting simple dotfiles setup..."
     log_info "Script directory: $SCRIPT_DIR"
-    
+
     # Ensure .config directory exists
     if [[ ! -d "$HOME/.config" ]]; then
         if mkdir -p "$HOME/.config" 2>/dev/null; then
@@ -313,22 +316,22 @@ main() {
             exit 1
         fi
     fi
-    
+
     # Setup basic dotfiles
     log_info "Setting up basic dotfiles..."
     setup_links "${BASIC_LINKS[@]}"
-    
+
     # Setup config dotfiles
     log_info "Setting up .config dotfiles..."
     setup_config_links "${BASIC_CONFIG_LINKS[@]}"
-    
+
     # Setup OS-specific dotfiles
     setup_os_specific
-    
+
     # Setup tmux plugin manager
     log_info "Setting up tmux plugin manager..."
     setup_tpm
-    
+
     # Print summary
     print_summary
 }
