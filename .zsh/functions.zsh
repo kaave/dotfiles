@@ -242,6 +242,27 @@ gw() {
   return $?
 }
 
+launch_or_focus() {
+    if [[ $# -ne 2 ]]; then
+        echo "Usage: launch_or_focus <app_class> <app_exec>"
+        return 1
+    fi
+
+    local app_class="$1"
+    local app_exec="$2"
+
+    if command -v i3-msg >/dev/null 2>&1; then
+        if i3-msg "[class=$app_class]" focus >/dev/null; then
+            return 0
+        else
+            $app_exec &
+        fi
+    else
+        echo "i3-msg command not found. Cannot focus or launch application."
+        return 1
+    fi
+}
+
 autorun_tmux() {
     # Check if we should run tmux
     local should_run_tmux=false

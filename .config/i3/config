@@ -105,17 +105,19 @@ bindsym ctrl+Shift+9 move container to workspace $ws9
 bindsym ctrl+0 workspace $ws0
 bindsym ctrl+Shift+0 move container to workspace $ws0
 
+bindsym ctrl+space exec --no-startup-id launch_or_focus Thunar Thunar
+
 # application's default workspaces
 # tips: get app's class name run xprop
 for_window [class="Brave-browser"]    move to workspace $ws1
 # for_window [class="Slack"]            move to workspace $ws2
 # for_window [class="sidekick-browser"] move to workspace $ws3
-# for_window [class="Notepadqq"]        move to workspace $ws8
 for_window [class="Code"]             move to workspace $ws9
 for_window [class="Alacritty"]        move to workspace $ws0
 
 # application's default floating
 for_window [class="Thunar"] floating enable
+for_window [class="Notepadqq"] floating enable
 
 # set PgUp/Dn key to move workspace
 bindsym $mod+Prior workspace prev
@@ -162,8 +164,6 @@ exec --no-startup-id nm-applet
 exec --no-startup-id dunst
 exec --no-startup-id volumeicon
 exec --no-startup-id fcitx5
-# ctrl + nがちゃんと動かなくなる
-# exec --no-startup-id /home/kaave/.xkeysnail/start.bash
 exec --no-startup-id xset r rate 200 40
 
 exec --no-startup-id brave
