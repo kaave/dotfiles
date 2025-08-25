@@ -109,11 +109,12 @@ bindsym ctrl+space exec --no-startup-id launch_or_focus Thunar Thunar
 
 # application's default workspaces
 # tips: get app's class name run xprop
-for_window [class="Brave-browser"]    move to workspace $ws1
+for_window [class="Brave-browser"]      move to workspace $ws1
 # for_window [class="Slack"]            move to workspace $ws2
 # for_window [class="sidekick-browser"] move to workspace $ws3
-for_window [class="Code"]             move to workspace $ws9
-for_window [class="Alacritty"]        move to workspace $ws0
+for_window [class="Simplenote"]         move to workspace $ws8
+for_window [class="Code"]               move to workspace $ws9
+for_window [class="Alacritty"]          move to workspace $ws0
 
 # application's default floating
 for_window [class="Thunar"] floating enable
@@ -170,9 +171,9 @@ exec --no-startup-id brave
 # exec --no-startup-id slack
 # exec --no-startup-id ticktick
 # exec --no-startup-id sidekick-browser-stable
-# exec --no-startup-id notepadqq
 exec --no-startup-id code
 exec --no-startup-id alacritty
+exec --no-startup-id simplenote
 
 #
 # wallpaper
