@@ -105,7 +105,7 @@ bindsym ctrl+Shift+9 move container to workspace $ws9
 bindsym ctrl+0 workspace $ws0
 bindsym ctrl+Shift+0 move container to workspace $ws0
 
-bindsym ctrl+space exec --no-startup-id launch_or_focus Thunar Thunar
+# bindsym ctrl+space exec --no-startup-id launch_or_focus Thunar Thunar
 
 # application's default workspaces
 # tips: get app's class name run xprop
