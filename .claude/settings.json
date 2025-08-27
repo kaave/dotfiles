@@ -1,7 +1,12 @@
 {
   "env": {
+    "DISABLE_MICROCOMPACT": "1",
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
-    "DISABLE_AUTOUPDATER": "1"
+    "DISABLE_AUTOUPDATER": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_TELEMETRY": "1"
   },
   "permissions": {
     "allow": [
@@ -43,6 +48,7 @@
       "Bash(curl:*)",
       "Bash(wget:*)",
       "Bash(git push:*)",
+      "Bash(git commit:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
       "Read(.env.*)",
