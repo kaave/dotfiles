@@ -60,6 +60,7 @@ Commit として完結する粒度。「◯◯ ファイルを一旦空で追加
   <task_status>(現在のステータス。todo, progress, done, cancel のどれか)</task_status>
   <task_title>(自然言語によるタスク名)</task_title>
   <task_description>(詳細な説明文)</task_description>
+  <task_design>(タスクの実施に必要な設計。変更対象ファイル、関数など。タスク実施時に最新の実装を必ず確認する前提で、ここを確認すれば大まかなイメージがつくようにする)</task_design>
   <task_tags>
     <task_tag>(属性すべて)</task_tag>
   </task_tags>
