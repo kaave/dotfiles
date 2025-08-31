@@ -4,6 +4,67 @@ argument-hint: [Design Docのパス]
 description: "Design Docと既存のコードベースを元に Epic と Task を作成するカスタムスラッシュコマンド。"
 ---
 
+<defines>
+  <epic_statuses>
+    <item>
+      <value>todo</value>
+      <description>作業前</description>
+    </item>
+    <item>
+      <value>progressing</value>
+      <description>作業中</description>
+    </item>
+    <item>
+      <value>reviewing</value>
+      <description>レビュー中。ユーザーのレビュー待ちを意味し、GitHubやGitLabとは関係がない</description>
+    </item>
+    <item>
+      <value>done</value>
+      <description>作業完了。正常に完了した</description>
+    </item>
+    <item>
+      <value>cancelled</value>
+      <description>作業完了。なんらかの理由で完了前に中止した</description>
+    </item>
+  </epic_statuses>
+  <task_statuses>
+    <item>
+      <value>todo</value>
+      <description>作業前</description>
+    </item>
+    <item>
+      <value>progressing</value>
+      <description>作業中</description>
+    </item>
+    <item>
+      <value>done</value>
+      <description>作業完了。正常に完了した</description>
+    </item>
+    <item>
+      <value>cancelled</value>
+      <description>作業完了。なんらかの理由で完了前に中止した</description>
+    </item>
+  </task_statuses>
+  <best_practices>
+    <item>
+      <owner>t-wada</owner>
+      <advocate>テスト駆動開発</advocate>
+    </item>
+    <item>
+      <owner>Scott Wlaschin</owner>
+      <advocate>Functional Domain Modeling</advocate>
+    </item>
+    <item>
+      <owner>John Ousterhout</owner>
+      <advocate>複雑性へのアプローチ</advocate>
+    </item>
+    <item>
+      <owner>Alexis King</owner>
+      <advocate>Parse, don't validate</advocate>
+    </item>
+  </best_practices>
+</defines>
+
 # 実行計画策定
 
 Design Doc を元に、実行計画を策定し、Epic と Task を作成するカスタムスラッシュコマンド。
@@ -37,10 +98,11 @@ Design Doc が存在した場合、実行計画の策定に移ります。大雑
 
 ```xml
 <epic>
-  <epic_id>(Sequence ID。2桁で、ゼロパディングあり)</epic_id>
-  <epic_status>(現在のステータス。todo, progress, reviewing, done, cancel のどれか)</epic_status>
+  <epic_id>(uuid:v7)</epic_id>
+  <epic_status>(現在のステータス。epic_statusesのいずれか)</epic_status>
   <epic_title>(自然言語によるエピック名)</epic_title>
   <epic_description>(詳細な説明文)</epic_description>
+  <epic_termination_condition>(Epic の終了条件。「npm run test がエラーなく通る」など、具体的な完了条件を記載する)</epic_termination_condition>
   <epic_tags>
     <epic_tag>(属性すべて)</epic_tag>
   </epic_tags>
@@ -64,11 +126,12 @@ Commit として完結する粒度。「◯◯ ファイルを一旦空で追加
 
 ```xml
 <task>
-  <task_id>(Sequence ID。全体で連番)</task_id>
-  <task_status>(現在のステータス。todo, progress, done, cancel のどれか。タスク単体をレビューすることはないため reviewing は存在しない)</task_status>
+  <task_id>(uuid:v7)</task_id>
+  <task_status>(現在のステータス。task_statusesのいずれか)</task_status>
   <task_title>(自然言語によるタスク名)</task_title>
   <task_description>(詳細な説明文)</task_description>
-  <task_design>(タスクの実施に必要な設計。変更対象ファイル、関数など。タスク実施時に最新の実装を必ず確認する前提で、ここを確認すれば大まかなイメージがつくようにする)</task_design>
+  <task_design>(タスクの実施に必要な設計。変更対象ファイル、関数など。タスク実施時に最新の実装を必ず確認する前提で、ここを確認すれば Design Doc を確認することなく大まかなイメージがつくようにする)</task_design>
+  <task_termination_condition>(Task の終了条件。「npm run test がエラーなく通る」など、具体的な完了条件を記載する)</task_termination_condition>
   <task_tags>
     <task_tag>(属性すべて)</task_tag>
   </task_tags>
@@ -97,6 +160,7 @@ Commit として完結する粒度。「◯◯ ファイルを一旦空で追加
 - 必要な情報が集まったら、**イテレーティブアプローチ**を重視して実行計画を深く考えて策定せよ
   - 各Epicで動作するプロダクトができることを確認
   - 最小限→段階的拡張の流れになっていることを確認
+  - best_practices を参照、活用せよ
 - 実行計画を策定したらユーザーに確認せよ。その際にはEpic ID, Title, Descriptionと紐づくTaskをそれぞれ提示せよ。
 - **フィードバック対応**: ユーザーから修正要求があった場合、アプローチを見直して再提示せよ。
 - ユーザーの確認後、指定の場所にファイルを出力せよ。
