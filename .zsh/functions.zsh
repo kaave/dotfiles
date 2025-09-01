@@ -296,6 +296,14 @@ autorun_tmux() {
     fi
 }
 
+get_max_epic_id() {
+    perl -ne 'if(/<epic_id>(\d+)<\/epic_id>/){$max=$1 if $1>$max}END{print "$max\n"}' docs/epics/*.xml
+}
+
+get_max_task_id() {
+    perl -ne 'if(/<task_id>(\d+)<\/task_id>/){$max=$1 if $1>$max}END{print "$max\n"}' docs/epics/*.xml
+}
+
 # Docker helper functions (moved from app_settings.zsh)
 if command -v docker >/dev/null 2>&1; then
     dstop() { docker stop $(docker ps -a -q); }

@@ -98,7 +98,7 @@ Design Doc が存在した場合、実行計画の策定に移ります。大雑
 
 ```xml
 <epic>
-  <epic_id>(uuid:v7)</epic_id>
+  <epic_id>(連番)</epic_id>
   <epic_status>(現在のステータス。epic_statusesのいずれか)</epic_status>
   <epic_title>(自然言語によるエピック名)</epic_title>
   <epic_description>(詳細な説明文)</epic_description>
@@ -126,7 +126,7 @@ Commit として完結する粒度。「◯◯ ファイルを一旦空で追加
 
 ```xml
 <task>
-  <task_id>(uuid:v7)</task_id>
+  <task_id>(連番。エピック単位ではなく、すべてのエピック通してのれん版で作成する)</task_id>
   <task_status>(現在のステータス。task_statusesのいずれか)</task_status>
   <task_title>(自然言語によるタスク名)</task_title>
   <task_description>(詳細な説明文)</task_description>
@@ -160,6 +160,7 @@ Commit として完結する粒度。「◯◯ ファイルを一旦空で追加
 - 必要な情報が集まったら、**イテレーティブアプローチ**を重視して実行計画を深く考えて策定せよ
   - 各Epicで動作するプロダクトができることを確認
   - 最小限→段階的拡張の流れになっていることを確認
+  - テストや静的解析はなるべく早い段階で設定しておき、あとからまとめて対応することを避ける
   - best_practices を参照、活用せよ
 - 実行計画を策定したらユーザーに確認せよ。その際にはEpic ID, Title, Descriptionと紐づくTaskをそれぞれ提示せよ。
 - **フィードバック対応**: ユーザーから修正要求があった場合、アプローチを見直して再提示せよ。
