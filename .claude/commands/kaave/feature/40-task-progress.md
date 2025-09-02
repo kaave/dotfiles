@@ -1,5 +1,5 @@
 ---
-# allowed-tools: 
+# allowed-tools:
 argument-hint: [EPIC XMLのパスとエピックID]
 description: "指定の、あるいは実行可能なタスクを実行します。"
 ---
@@ -71,12 +71,12 @@ description: "指定の、あるいは実行可能なタスクを実行します
 
 ## リクエスト
 
-<_$ARGUMENTS_> 、あるいは <_docs/epics_> 配下から次に実行可能な Epic (epic_status が todo または reviewing) を探して、Epicに紐づいたタスクを実行してください。ファイルが見当たらない、あるいは実行可能なEpicが見当たらない場合は、一旦処理を停止して kaave に指示を仰いでください。
+<_$ARGUMENTS_> 、あるいは <_docs/epics_> 配下から次に実行可能な Epic (epic_status が todo または reviewing) を探して、Epic に紐づいたタスクを実行してください。ファイルが見当たらない、あるいは実行可能な Epic が見当たらない場合は、一旦処理を停止して kaave に指示を仰いでください。
 
 ## 詳細
 
 - Epic に紐づいた Task を確認し、順番に実行せよ。
-- 実行開始時と完了時には必ずEpicとTaskのステータスを `progressing` に変更せよ。
+- 実行開始時と完了時には必ず Epic と Task のステータスを `progressing` に変更せよ。
 - タスクを確認したら深く考え、実施に必要な情報を収集せよ。
   - 既存コードベースの確認が必要な場合はこのタイミングで必ず実施せよ。
   - 追加でユーザーに確認したいことがあれば確認せよ。
@@ -84,3 +84,14 @@ description: "指定の、あるいは実行可能なタスクを実行します
 - タスク実施時には best_practices を参照、活用せよ
 - タスクが完了したら、チェックコマンドを実行して問題ないか検証せよ。
 - 検証に問題がなければ、 Epic の Status を `reviewing` に変更し、ユーザーに完了報告を実施し、レビュー依頼を実施せよ。またその際には _./50-review-result.md_ にて定義されたカスタムスラッシュコマンドを利用することを要求せよ。
+
+## コーディング規約
+
+### テスト
+
+- 元のファイルが `index.ts` であればテストファイルは `index.spec.ts` というファイル名とせよ。
+- test ファイルはセットアップファイルを除いてテスト対象と同一パスに配置せよ。
+- describe ~ it ~ expect 記法で記載せよ。
+- Arrange-Act-Assert (AAA) パターンを徹底せよ。
+- DRY ではなく DAMP を徹底せよ。
+- cleanup 処理は Assert の後に書かない。 `beforeEach` に対応するものは `afterEach` 、単発の mock 処理は `onTestFinished()` を利用して定義のそばに書くこと。
