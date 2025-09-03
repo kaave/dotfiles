@@ -71,7 +71,7 @@ description: "指定の、あるいは実行可能なタスクを実行します
 
 ## リクエスト
 
-<_$ARGUMENTS_> 、あるいは <_docs/epics_> 配下から次に実行可能な Epic (epic_status が todo または reviewing) を探して、Epic に紐づいたタスクを実行してください。ファイルが見当たらない、あるいは実行可能な Epic が見当たらない場合は、一旦処理を停止して kaave に指示を仰いでください。
+<_$ARGUMENTS_> 、あるいは <_docs/epics/*.xml_> から次に実行可能な Epic (epic_status が todo または reviewing) を探して、Epic に紐づいたタスクを実行してください。ファイルが見当たらない、あるいは実行可能な Epic が見当たらない場合は、一旦処理を停止して kaave に指示を仰いでください。
 
 ## 詳細
 
