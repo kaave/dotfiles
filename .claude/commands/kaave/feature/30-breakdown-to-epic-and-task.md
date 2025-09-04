@@ -147,7 +147,7 @@ Commit として完結する粒度。「◯◯ ファイルを一旦空で追加
 ## 出力ファイル
 
 - 形式: XML
-- 場所: docs/epics/<epic*id>*<epic_title>.xml
+- 場所: docs/epics/<epic_id>_<epic_title>.xml
 - 粒度: Epic ひとつにつきそれぞれ 1 ファイル
 - 命名: スネークケース、日本語は英訳
 
