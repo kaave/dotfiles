@@ -13,9 +13,9 @@ general {
 order += "wireless _first_"
 order += "ethernet _first_"
 order += "battery all"
-# order += "disk /"
-# order += "load"
-# order += "memory"
+order += "disk /"
+order += "load"
+order += "memory"
 order += "tztime local"
 
 wireless _first_ {
@@ -23,19 +23,31 @@ wireless _first_ {
         format_down = "<span color='#dc322f' weight='bold'>No Wifi</span>"
 }
 
+ethernet _first_ {
+        format_up = "E: %ip (%speed)"
+        format_down = "<span color='#dc322f'>No Eth</span>"
+}
+
 battery all {
-        format = "<b>%status %percentage&lt;%remaining&gt;</b>"
+        format = "%status %percentage %remaining"
+}
+
+disk "/" {
+        format = "%avail"
+}
+
+load {
+        format = "%1min"
 }
 
 memory {
-        format = "%used | %available"
+        format = "%used %available"
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
 }
 
 tztime local {
-        format = "<span color='#859900' weight='bold'>%time</span>"
-        format_time = "%a %m/%d %H:%M"
+        format = "<span color='#859900' weight='bold'>%a %m/%d %H:%M</span>"
         locale = en_US.UTF-8
 }
 

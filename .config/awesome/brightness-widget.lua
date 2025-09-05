@@ -1,1 +1,0 @@
-awesome.brightness-widget/brightness-widget.lua

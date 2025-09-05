@@ -92,8 +92,10 @@ readonly LINUX_LINKS=(
 )
 
 readonly LINUX_CONFIG_LINKS=(
-    "awesome"
     "fontconfig"
+    "i3"
+    "i3status"
+    "rofi"
     "xremap"
 )
 
