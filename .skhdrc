@@ -8,7 +8,7 @@ ctrl - 6 : open /Applications/Figma.app
 ctrl - 7 : open /Applications/Bitwarden.app
 ctrl - 8 : open /Applications/Obsidian.app
 ctrl - 9 : open '/Applications/Visual Studio Code.app'
-ctrl - 0 : open /Applications/Alacritty.app
+ctrl - 0 : open /Applications/WezTerm.app
 ctrl + shift - 1 : open '/Applications/Firefox Developer Edition.app'
 # ctrl + shift - 2 : open /Applications/Slack.app
 # ctrl + shift - 3 : open /Applications/Sidekick.app

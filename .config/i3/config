@@ -33,7 +33,7 @@ bindsym $mod+Shift+5 exec --no-startup-id simplescreenrecorder --no-systray
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Shift+Return exec alacritty
+bindsym $mod+Shift+Return exec wezterm
 
 # kill focused window
 bindsym $mod+q kill
@@ -114,7 +114,7 @@ for_window [class="Brave-browser"]      move to workspace $ws1
 # for_window [class="sidekick-browser"] move to workspace $ws3
 for_window [class="Simplenote"]         move to workspace $ws8
 for_window [class="Code"]               move to workspace $ws9
-for_window [class="Alacritty"]          move to workspace $ws0
+for_window [class="WezTerm"]            move to workspace $ws0
 
 # application's default floating
 for_window [class="Thunar"] floating enable
@@ -172,7 +172,7 @@ exec --no-startup-id brave
 # exec --no-startup-id ticktick
 # exec --no-startup-id sidekick-browser-stable
 exec --no-startup-id code
-exec --no-startup-id alacritty
+exec --no-startup-id wezterm
 exec --no-startup-id simplenote
 
 #
