@@ -267,7 +267,7 @@ autorun_tmux() {
     # Check if we should run tmux
     local should_run_tmux=false
     case "$TERM_PROGRAM" in
-        alacritty|iTerm.app) should_run_tmux=true ;;
+        alacritty|iTerm.app|WezTerm) should_run_tmux=true ;;
     esac
 
     # WSL specific check

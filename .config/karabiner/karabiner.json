@@ -10,6 +10,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
@@ -674,6 +675,7 @@
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
+                                            "^com\\.github\\.wez\\.wezterm",
                                             "^com\\.todesktop\\.230313mzl4w4u92$",
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
