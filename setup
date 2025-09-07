@@ -37,7 +37,8 @@ readonly BASIC_LINKS=(
     # linter
     ".textlintrc"
 
-    # tmux
+    # terminal
+    ".wezterm.lua"
     ".tmux.conf"
     ".tmux"
 
@@ -66,7 +67,6 @@ readonly BASIC_LINKS=(
 
 # Basic .config links
 readonly BASIC_CONFIG_LINKS=(
-    "alacritty"
     "nvim"
     "powerline"
     "rofi"

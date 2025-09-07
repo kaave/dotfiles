@@ -114,7 +114,7 @@ for_window [class="Brave-browser"]      move to workspace $ws1
 # for_window [class="sidekick-browser"] move to workspace $ws3
 for_window [class="Simplenote"]         move to workspace $ws8
 for_window [class="Code"]               move to workspace $ws9
-for_window [class="WezTerm"]            move to workspace $ws0
+for_window [class="org.wezfurlong.wezterm"]            move to workspace $ws0
 
 # application's default floating
 for_window [class="Thunar"] floating enable
