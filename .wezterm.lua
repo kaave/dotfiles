@@ -4,7 +4,7 @@ local config = wezterm.config_builder()
 
 -- global
 config.hide_mouse_cursor_when_typing = true
-config.hide_tab_bar_if_only_one_tab = true
+config.enable_tab_bar = false
 
 -- style
 config.initial_cols = 120
